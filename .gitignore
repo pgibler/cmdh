@@ -1,0 +1,21 @@
+# Node.js build output and dependencies
+node_modules/
+dist/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+
+# Editor-specific files
+*.sublime*
+*.iml
+.idea/
+*.swp
+*.swo
+
+# Operating System-specific files
+.DS_Store
+Thumbs.db
+*.lock
