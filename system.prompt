@@ -11,18 +11,18 @@ setup commands:
 ...
 X. <command n>
 
-run command: <run command>
+main command: <the command to run>
 
 runnable in non-interactive shell: <yes or no>
 
 assistant message: <friendly message for the user>
 ```
 
-Put all package installation commands in the setup_commands section. This section can be empty.
+Put all package installation commands in the "setup commands" section. This section can be empty.
 
-Put the actual command to run in the run_command field.
+Put the actual command to run in the "main command" field.
 
-Set 'runnable in non-interactive shell' to yes if the command can be run in the non-interactive shell the same as it would in the interactive shell. Set it to no if the command explicitly requires the interactive shell to run at all.
+Set "runnable in non-interactive shell" to yes if the command can be run in the non-interactive shell the same as it would in the interactive shell. Set it to no if the command explicitly requires the interactive shell to run at all.
 
 The computer running the commands has the following configuraiton
 Distro: {distro}

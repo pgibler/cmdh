@@ -6,6 +6,7 @@ import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -46,32 +47,10 @@ async function main() {
     if (setupCommands.length > 0) {
       console.log(chalk.green('setup commands:'), setupCommands);
     }
-    console.log(chalk.green('run command:'), chalk.yellow(runCommand));
+    console.log(chalk.green('main command:'), chalk.yellow(runCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
-    const defaultOption = !nonInteractive ? 'C' : (
-      nonInteractive && setupCommands.length > 0 ? 'A' : 'R'
-    );
-
-    const copyText = defaultOption == 'C' ? chalk.bold('◉ Copy command to clipboard (C)') : '○ Copy command to clipboard (C)';
-    const runAllText = defaultOption == 'A' && setupCommands.length > 0 ? chalk.bold('◉ Run all (A)') : '○ Run all (A)';
-    const runText = defaultOption == 'R' && setupCommands.length <= 0 ? chalk.bold('◉ Run command (R)') : '○ Run command (R)';
-
-    console.log(chalk.green('Choose an option:'));
-    if (setupCommands.length > 0) {
-      console.log(runAllText);
-    }
-    console.log(runText);
-    if (!nonInteractive) {
-      console.log(copyText);
-    }
-    if (setupCommands.length > 0) {
-      console.log('○ Run setup commands (S)');
-    }
-    console.log('○ Quit (Q)');
-    console.log(`[default: ${chalk.bold(defaultOption)}]: `);
-
-    let choice = await questionAsync('');
+    let choice = await getMenuChoice(nonInteractive, setupCommands);
 
     if (choice.trim() === '') {
       choice = defaultOption;
@@ -80,7 +59,7 @@ async function main() {
       case 'a': // run all
         await setupAndRunCommands(setupCommands, runCommand);
         break;
-      case 'r': // run commands
+      case 'm': // main command
         await runCommands([runCommand]);
         break;
       case 'c':
@@ -93,11 +72,11 @@ async function main() {
         console.log('👋');
         break;
       default:
-        if (defaultOption === 'A') {
+        if (defaultOption === 'a') {
           await setupAndRunCommands(setupCommands, runCommand);
-        } else if (defaultOption === 'R') {
+        } else if (defaultOption === 'm') {
           await runCommands([runCommand]);
-        } else if (defaultOption === 'C') {
+        } else if (defaultOption === 'c') {
           await copyCommand(runCommand);
         }
         break;
@@ -105,8 +84,49 @@ async function main() {
   }
 }
 
+async function getMenuChoice(nonInteractive, setupCommands) {
+  const options = [
+    {
+      name: 'Run main command (M)',
+      value: 'm',
+    },
+    {
+      name: 'Quit (Q)',
+      value: 'q',
+    },
+  ];
+
+  const defaultOption = !nonInteractive ? 'c' : (
+    nonInteractive && setupCommands.length > 0 ? 'a' : 'm'
+  );
+
+  if (setupCommands.length > 0) {
+    options.unshift({ name: 'Run setup commands (S)', value: 's' })
+    options.unshift({ name: 'Run all commands (A)', value: 'a' });
+  }
+  if (!nonInteractive) {
+    const spliceIndex = options.findIndex(option => option.value === 'm')
+    options.splice(spliceIndex, 0, {
+      name: 'Copy command to clipboard (C)',
+      value: 'c',
+    });
+  }
+
+  const answers = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'choice',
+      message: 'Choose an option:',
+      choices: options,
+      default: defaultOption,
+    },
+  ]);
+
+  return answers.choice;
+}
+
 function parseResponse(response) {
-  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\nrun command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
+  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\nmain command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
   const match = response.match(regex);
 
   if (!match) {
@@ -167,7 +187,7 @@ function copyCommand(command) {
 }
 
 function writeInstructions(setupCommands, runCommand, assistantMessage) {
-  const instructions = `setup commands:\n${setupCommands.join('\n')}\n\nrun command: ${runCommand}\n\nassistant message: ${assistantMessage}\n`;
+  const instructions = `setup commands:\n${setupCommands.join('\n')}\n\nmain command: ${runCommand}\n\nassistant message: ${assistantMessage}\n`;
   const filePath = path.join(__dirname, 'instructions.txt');
   fs.writeFileSync(filePath, instructions);
   console.log(`Instructions saved to: ${filePath}`);
