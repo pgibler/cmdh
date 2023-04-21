@@ -41,7 +41,11 @@ export default async (options) => {
       } else if (isDownKey(key)) {
         setIndex(index < choices.length - 1 ? index + 1 : choices.length - 1);
       } else {
-        const foundIndex = choices.findIndex((choice) => choice.value.toLowerCase() === key.name.toLowerCase());
+        const foundIndex = choices.findIndex((choice) => {
+          const choiceValue = choice.value.toLowerCase();
+          const keyName = key.name.toLowerCase();
+          return choiceValue.startsWith(keyName);
+        });
         if (foundIndex !== -1) {
           setIndex(foundIndex);
           // This automatically finishes the prompt. Remove this if you don't want that.

@@ -51,7 +51,7 @@ async function main() {
     if (setupCommands.length > 0) {
       console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
     }
-    console.log(chalk.green('main command:'), chalk.yellow(runCommand));
+    console.log(chalk.green('desire command:'), chalk.yellow(runCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
     let choice = await getCustomMenuChoice(nonInteractive, setupCommands);
@@ -63,7 +63,7 @@ async function main() {
       case 'a': // run all
         await setupAndRunCommands(setupCommands, runCommand);
         break;
-      case 'm': // main command
+      case 'd': // desire command
         await runCommands([runCommand]);
         break;
       case 'c':
@@ -85,9 +85,9 @@ async function main() {
 async function getCustomMenuChoice(nonInteractive, setupCommands) {
   const options = [
     {
-      name: 'Run main command (M)',
-      value: 'm',
-      key: 'm',
+      name: 'Run desire command (D)',
+      value: 'd',
+      key: 'd',
     },
     {
       name: 'Quit (Q)',
@@ -97,7 +97,7 @@ async function getCustomMenuChoice(nonInteractive, setupCommands) {
   ];
 
   const defaultOption = !nonInteractive ? 'c' : (
-    nonInteractive && setupCommands.length > 0 ? 'a' : 'm'
+    nonInteractive && setupCommands.length > 0 ? 'a' : 'd'
   );
 
   if (setupCommands.length > 0) {
@@ -105,7 +105,7 @@ async function getCustomMenuChoice(nonInteractive, setupCommands) {
     options.unshift({ name: 'Run all commands (A)', value: 'a', key: 'a' });
   }
   if (!nonInteractive) {
-    const spliceIndex = options.findIndex(option => option.value === 'm')
+    const spliceIndex = options.findIndex(option => option.value === 'd') + 1
     const copyChoice = { name: 'Copy command to clipboard (C)', value: 'c', key: 'c', };
     options.splice(spliceIndex, 0, copyChoice);
   }
@@ -121,7 +121,7 @@ async function getCustomMenuChoice(nonInteractive, setupCommands) {
 }
 
 function parseResponse(response) {
-  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\nmain command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
+  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\ndesire command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
   const match = response.match(regex);
 
   if (!match) {
@@ -182,7 +182,7 @@ function copyCommand(command) {
 }
 
 function writeInstructions(setupCommands, runCommand, assistantMessage) {
-  const instructions = `setup commands:\n${setupCommands.join('\n')}\n\nmain command: ${runCommand}\n\nassistant message: ${assistantMessage}\n`;
+  const instructions = `setup commands:\n${setupCommands.join('\n')}\n\ndesire command: ${runCommand}\n\nassistant message: ${assistantMessage}\n`;
   const filePath = path.join(__dirname, 'instructions.txt');
   fs.writeFileSync(filePath, instructions);
   console.log(`Instructions saved to: ${filePath}`);
