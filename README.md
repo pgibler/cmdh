@@ -2,6 +2,8 @@
 
 cmdh (short for Command Helper) is a simple and powerful tool specifically designed for Linux systems. It leverages the power of ChatGPT to help you find and run Linux commands with ease. Just provide a short description of the task you want to accomplish, and cmdh will generate the appropriate commands for you.
 
+[cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
+
 ## Description
 
 This project is a Node.js command-line application that takes a user prompt describing a desired action or command and uses ChatGPT to generate a list of relevant Linux commands. The application will then offer options to run the generated commands, store them in a file, or discard them.
@@ -10,7 +12,6 @@ This project is a Node.js command-line application that takes a user prompt desc
 
 - Find relevant Linux commands by providing a simple description
 - Interactively run the generated commands
-- Store generated commands and instructions for future reference
 - Leverage the power of ChatGPT to discover new commands and improve your Linux skills
 
 ## Installation
