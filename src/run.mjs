@@ -6,9 +6,7 @@ import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
-
-import inquirer from 'inquirer';
-import customListPrompt from './customListPrompt.mjs';
+import quickSelectPrompt from './quickSelectPrompt.mjs';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -112,10 +110,11 @@ async function getCustomMenuChoice(nonInteractive, setupCommands) {
     options.splice(spliceIndex, 0, copyChoice);
   }
 
-  const answer = await customListPrompt({
+  const answer = await quickSelectPrompt({
     message: 'Choose an option:',
     choices: options,
     default: defaultOption,
+    renderer: line => chalk.cyan(`> ${line}`)
   });
 
   return answer;
