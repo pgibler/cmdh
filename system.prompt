@@ -24,6 +24,8 @@ Put the actual command to run in the "main command" field.
 
 Set "runnable in non-interactive shell" to yes if the command can be run in the non-interactive shell the same as it would in the interactive shell. Set it to no if the command explicitly requires the interactive shell to run at all.
 
+In the assistant message, say whatever you would like to user. If the main command is supposed to be run in an interactive shell, note that command may not work as expected if run in the non-interactive shell.
+
 The computer running the commands has the following configuraiton
 Distro: {distro}
 Architecture: {arch}

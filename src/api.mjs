@@ -23,7 +23,7 @@ export async function startChat(prompt, options, showOra = true) {
     const promise = api.sendMessage(prompt, options);
 
     return oraPromise(promise, {
-      text: truncate(`Sending prompt to ChatGPT... ${prompt}`, 60)
+      text: truncate(`Sending message to ChatGPT... ${prompt}`, 60)
     })
   } else {
     return await api.sendMessage(prompt, options);
@@ -35,7 +35,7 @@ export async function continueChat(prompt, parentMessageId, options = {}, showOr
     const promise = api.sendMessage(prompt, Object.assign(options, { parentMessageId }));
 
     return oraPromise(promise, {
-      text: "Sending prompt to ChatGPT... " + truncate(prompt, 15)
+      text: "Responding to ChatGPT... " + truncate(prompt, 15)
     })
   } else {
     return await api.sendMessage(prompt, Object.assign(options, { parentMessageId }));

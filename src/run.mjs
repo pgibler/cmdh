@@ -6,7 +6,9 @@ import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
+
 import inquirer from 'inquirer';
+import customListPrompt from './customListPrompt.mjs';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -26,6 +28,13 @@ async function main() {
     });
   }
 
+  async function getSystemMessage() {
+    const systemMessageTemplate = await readFile(path.resolve(__dirname, '../system.prompt'), 'utf-8');
+    const systemInfo = getSystemInfo();
+    const { distro, arch } = systemInfo;
+    return systemMessageTemplate.replace('{distro}', distro).replace('{arch}', arch);
+  }
+
   const promptArg = process.argv[2];
 
   if (promptArg) {
@@ -36,21 +45,18 @@ async function main() {
   }
 
   async function handlePrompt(input) {
-    const systemMessageTemplate = await readFile(path.resolve(__dirname, '../system.prompt'), 'utf-8');
-    const systemInfo = getSystemInfo();
-    const { distro, arch } = systemInfo;
-    const systemMessage = systemMessageTemplate.replace('{distro}', distro).replace('{arch}', arch);
+    const systemMessage = await getSystemMessage();
 
     const response = await startChat(input, { systemMessage });
     const { setupCommands, runCommand, nonInteractive, assistantMessage } = parseResponse(response.text);
 
     if (setupCommands.length > 0) {
-      console.log(chalk.green('setup commands:'), setupCommands);
+      console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
     }
     console.log(chalk.green('main command:'), chalk.yellow(runCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
-    let choice = await getMenuChoice(nonInteractive, setupCommands);
+    let choice = await getCustomMenuChoice(nonInteractive, setupCommands);
 
     if (choice.trim() === '') {
       choice = defaultOption;
@@ -72,27 +78,23 @@ async function main() {
         console.log('👋');
         break;
       default:
-        if (defaultOption === 'a') {
-          await setupAndRunCommands(setupCommands, runCommand);
-        } else if (defaultOption === 'm') {
-          await runCommands([runCommand]);
-        } else if (defaultOption === 'c') {
-          await copyCommand(runCommand);
-        }
+        console.log('No option selected. Exiting program.')
         break;
     }
   }
 }
 
-async function getMenuChoice(nonInteractive, setupCommands) {
+async function getCustomMenuChoice(nonInteractive, setupCommands) {
   const options = [
     {
       name: 'Run main command (M)',
       value: 'm',
+      key: 'm',
     },
     {
       name: 'Quit (Q)',
       value: 'q',
+      key: 'q',
     },
   ];
 
@@ -101,28 +103,22 @@ async function getMenuChoice(nonInteractive, setupCommands) {
   );
 
   if (setupCommands.length > 0) {
-    options.unshift({ name: 'Run setup commands (S)', value: 's' })
-    options.unshift({ name: 'Run all commands (A)', value: 'a' });
+    options.unshift({ name: 'Run setup commands (S)', value: 's', key: 's' })
+    options.unshift({ name: 'Run all commands (A)', value: 'a', key: 'a' });
   }
   if (!nonInteractive) {
     const spliceIndex = options.findIndex(option => option.value === 'm')
-    options.splice(spliceIndex, 0, {
-      name: 'Copy command to clipboard (C)',
-      value: 'c',
-    });
+    const copyChoice = { name: 'Copy command to clipboard (C)', value: 'c', key: 'c', };
+    options.splice(spliceIndex, 0, copyChoice);
   }
 
-  const answers = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'choice',
-      message: 'Choose an option:',
-      choices: options,
-      default: defaultOption,
-    },
-  ]);
+  const answer = await customListPrompt({
+    message: 'Choose an option:',
+    choices: options,
+    default: defaultOption,
+  });
 
-  return answers.choice;
+  return answer;
 }
 
 function parseResponse(response) {
