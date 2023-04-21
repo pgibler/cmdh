@@ -25,7 +25,7 @@ This project is a Node.js command-line application that takes a user prompt desc
 
 3. Set up the environment variables required for the ChatGPT API (you'll need to obtain an API key):
 
-    `echo "CHATGPT_API_KEY=yourapikey" > .env`
+    `echo "OPENAI_API_KEY=yourapikey" > .env`
 
 ## Usage
 
