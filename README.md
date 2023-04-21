@@ -29,10 +29,11 @@ This project is a Node.js command-line application that takes a user prompt desc
 
 ## Usage
 
-To use Linux Command Helper, simply provide a description of the task or command you want to accomplish as a command-line argument, like this:
+To use Linux Command Helper, simply provide a description of the task or command you want to accomplish as a command-line argument. Here are some examples:
 
-`cmdh 'Display CPU temperature and watt usage.'`
-
-or
-
-`cmdh 'Continously monitor all in-use socket connections.'`
+```
+cmdh 'Show system info.'
+cmdh 'Display CPU speed.'
+cmdh 'Monitor GPU temperature'
+cmdh 'Continously monitor all in-use socket connections.'
+```
