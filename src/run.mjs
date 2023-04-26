@@ -6,7 +6,7 @@ import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
-import quickSelectPrompt from './quickSelectPrompt.mjs';
+import prompt from './inquirer-interactive-list-prompt/index.mjs';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -54,7 +54,7 @@ async function main() {
     console.log(chalk.green('desire command:'), chalk.yellow(runCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
-    let choice = await getCustomMenuChoice(nonInteractive, setupCommands);
+    let choice = await getPromptChoice(nonInteractive, setupCommands);
 
     if (choice.trim() === '') {
       choice = defaultOption;
@@ -82,7 +82,7 @@ async function main() {
   }
 }
 
-async function getCustomMenuChoice(nonInteractive, setupCommands) {
+async function getPromptChoice(nonInteractive, setupCommands) {
   const options = [
     {
       name: 'Run desire command (D)',
@@ -110,7 +110,7 @@ async function getCustomMenuChoice(nonInteractive, setupCommands) {
     options.splice(spliceIndex, 0, copyChoice);
   }
 
-  const answer = await quickSelectPrompt({
+  const answer = await prompt({
     message: 'Choose an option:',
     choices: options,
     default: defaultOption,
@@ -179,13 +179,6 @@ function runCommandWithSpawn(command) {
 function copyCommand(command) {
   clipboardy.writeSync(command);
   console.log('Command copied to clipboard');
-}
-
-function writeInstructions(setupCommands, runCommand, assistantMessage) {
-  const instructions = `setup commands:\n${setupCommands.join('\n')}\n\ndesire command: ${runCommand}\n\nassistant message: ${assistantMessage}\n`;
-  const filePath = path.join(__dirname, 'instructions.txt');
-  fs.writeFileSync(filePath, instructions);
-  console.log(`Instructions saved to: ${filePath}`);
 }
 
 await main();

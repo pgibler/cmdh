@@ -1,0 +1,6 @@
+[submodule "inquirer-interactive-list-prompt"]
+	path = inquirer-interactive-list-prompt
+	url = https://github.com/pgibler/inquirer-interactive-list-prompt
+[submodule "src/inquirer-interactive-list-prompt"]
+	path = src/inquirer-interactive-list-prompt
+	url = https://github.com/pgibler/inquirer-interactive-list-prompt
