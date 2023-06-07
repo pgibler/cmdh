@@ -1,4 +1,4 @@
-# cmdh - Run Linux commands by describing what you want to do
+# cmdh - A powerful and easy-to-use Linux command creator
 
 cmdh (short for Command Helper) is a simple and powerful tool specifically to help users use Linux commands easily and effectively. It leverages the power of ChatGPT to help you find and run Linux commands with ease. Just provide a short description of the task you want to accomplish, and cmdh will generate the appropriate commands for you.
 
