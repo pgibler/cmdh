@@ -1,6 +1,6 @@
 # cmdh - Create Linux commands from natural language
 
-cmdh (short for Command Helper) is a productivity booster for all Linux users, from power users to newbies and everyone in between. Rather than searching through documentation everytime you need to do something in the terminal, you can now prompt for Linux commands easily with powerful results. It leverages the power of LLM's to help you find and run Linux commands with ease. Just provide a short description of the task you want to accomplish, and cmdh will generate the appropriate commands for you.
+cmdh (short for Command Helper) is a productivity booster for all Linux users, from power users to newbies and everyone in between. Rather than searching through documentation everytime you need to do something in the terminal, you can now prompt for Linux commands easily with powerful results. It leverages the vast knowledge and lookup speeds of LLM's to help you find and run Linux commands with ease. Just provide a short description of the task you want to accomplish, and cmdh will generate the appropriate commands for you.
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
