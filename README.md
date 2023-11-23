@@ -14,13 +14,13 @@ setup commands: [ sudo apt-get update, sudo apt-get install git ]
 desire command: git log --since='1 month ago' --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines: %s total lines: %s\n",add,subs,loc }'
 assistant message: This command will show you the number of lines added and removed from your git repository over the past month. Please make sure to run this command from the root directory of your git repository.
 ? Choose an option:
->   Run all commands (A)
+    Run all commands (A)
     Run setup commands (S)
-    Run desire command (D)
+>   Run desire command (D)
     Quit (Q)
 ```
 
-Then if run the desire command, you'll see something like this:
+Then if you run the desire command, you'll see something like this:
 
 ```
 ? Choose an option: Run desire command (D)
