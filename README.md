@@ -1,6 +1,6 @@
 # cmdh - Create Linux commands from natural language
 
-cmdh (short for Command Helper) is a tool I made to first help myself learn Linux. It turns out to be pretty good at generating all sorts of commands, even highly specific and complex ones. It's saved me many hours already of searching through documentation everytime I need to do something in the terminal. I would eventually like to move the system to using LLaMa to make it fully open source. Until that happens, I'm releasing what I have as it's already been a productivity winner for me.
+cmdh (short for Command Helper) is a tool I made to help myself learn Linux commands. I'd know what I wanted to do, but wouldn't know the specific command. It works great for that. It turns out to also be pretty good at generating all sorts of commands, even highly specific and complex ones. It's saved me many hours already of searching through documentation everytime I need to do something in the terminal. I would eventually like to move the system to using LLaMa to make it fully open source. Until that happens, I'm releasing what I have as it's already been a productivity winner for me.
 
 Roadmap: The issues tracker contains possible improvements to the tool. There are some cool ideas that could be added to this to make it way more functional too. I will add them to the tracker as I think of them. I'm open to PRs with good ideas in them as well.
 
