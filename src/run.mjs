@@ -45,7 +45,7 @@ async function main() {
   async function handlePrompt(input) {
     const systemMessage = await getSystemMessage();
 
-    const response = await startChat(input, { systemMessage });
+    const response = await startChat(input, systemMessage);
     const { setupCommands, runCommand, nonInteractive, assistantMessage } = parseResponse(response.text);
 
     if (setupCommands.length > 0) {
