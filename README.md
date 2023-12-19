@@ -28,12 +28,15 @@ To use it, you simply type something like:
 The output will look something like this:
 
 ```
-✔ Retrieving command... Output number of commits in the past month in this gi...
-desire command: git rev-list --count --since="1 month ago" HEAD
-assistant message: This command will output the number of commits made in the past month in the current git project. Make sure you are in the root directory of your git project when running this command.
-? Choose an option: Run desire command (D)
-Running: git rev-list --count --since="1 month ago" HEAD
-7
+✔ Retrieving command... Output the number of lines of code committed to git l...
+setup commands: [ sudo apt-get update, sudo apt-get install git ]
+desire command: git diff --stat `git rev-list -n 1 --before="1 month ago" master`
+assistant message: This command will show you the number of lines of code that were committed to git last month. Please make sure you are in the correct directory where your git repository is located before running this command.
+? Choose an option:
+>   Run all commands (A)
+    Run setup commands (S)
+    Run desire command (D)
+    Quit (Q)
 ```
 
 Then if you run the desire command, you'll see something like this:
