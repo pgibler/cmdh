@@ -12,16 +12,10 @@ export default async function configure() {
   const currentConfig = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
     MODEL_NAME: process.env.MODEL_NAME || 'gpt-3.5',
-    LOCAL_URL: process.env.LOCAL_URL || 'http://localhost:11434/api/generate',
+    OLLAMA_HOST: process.env.OLLAMA_HOST || 'http://localhost:11434',
   };
 
   const questions = [
-    {
-      name: 'OPENAI_API_KEY',
-      type: 'input',
-      message: 'Enter your OpenAI API Key (optional)',
-      default: currentConfig.OPENAI_API_KEY,
-    },
     {
       name: 'MODEL_NAME',
       type: 'input',
@@ -29,17 +23,27 @@ export default async function configure() {
       default: currentConfig.MODEL_NAME,
     },
     {
-      name: 'LOCAL_URL',
+      name: 'OPENAI_API_KEY',
       type: 'input',
-      message: 'Enter the local URL:',
-      default: currentConfig.LOCAL_URL,
+      message: 'Enter your OpenAI API Key:',
+      default: currentConfig.OPENAI_API_KEY,
+    },
+    {
+      name: 'OLLAMA_HOST',
+      type: 'input',
+      message: 'Enter the ollama URL:',
+      default: currentConfig.OLLAMA_HOST,
     },
   ];
+
+  console.log("Configure your .env file for cmdh. Set the ollama URL to use ollama, or the OpenAI API Key to use OpenAI.")
+  console.log("The model name will determine whether OpenAI or ollama is used. Use gpt-3.5 or gpt-4 for OpenAI, otherwise ollama will be used.")
+  console.log("You only need to set one, but you can set both.")
 
   const answers = await inquirer.prompt(questions);
 
   // Construct the new configuration string, conditionally including OPENAI_API_KEY
-  let newConfig = `OPENAI_API_KEY=${answers.OPENAI_API_KEY}\nMODEL_NAME=${answers.MODEL_NAME}\nLOCAL_URL=${answers.LOCAL_URL}\n`;
+  let newConfig = `OPENAI_API_KEY=${answers.OPENAI_API_KEY}\nMODEL_NAME=${answers.MODEL_NAME}\nOLLAMA_HOST=${answers.OLLAMA_HOST}\n`;
 
   fs.writeFileSync('.env', newConfig);
   console.log('Configuration updated.');

@@ -27,7 +27,7 @@ function truncate(input, length) {
   return input;
 }
 
-const { OPENAI_API_KEY, MODEL_NAME, LOCAL_URL } = process.env;
+const { OPENAI_API_KEY, MODEL_NAME, OLLAMA_HOST } = process.env;
 
 const api = {
   sendMessage: async (prompt, system) => {
@@ -50,7 +50,7 @@ import { ChatGPTAPI } from 'chatgpt';
 const openAIModels = ['gpt-3.5', 'gpt-4'];
 
 async function ollamaResponse(prompt, system) {
-  const response = await fetch(LOCAL_URL, {
+  const response = await fetch(path.join(OLLAMA_HOST, '/api/generate'), {
     method: 'POST',
     body: JSON.stringify({
       model: MODEL_NAME,

@@ -1,23 +1,58 @@
 # cmdh - Create Linux commands from natural language
 
-cmdh (short for Command Helper) is a tool I made to help myself learn Linux commands. I'd know what I wanted to do, but wouldn't know the specific command. It works great for that. It turns out to also be pretty good at generating all sorts of commands, even highly specific and complex ones. It's saved me many hours already of searching through documentation everytime I need to do something in the terminal. I would eventually like to move the system to using LLaMa to make it fully open source. Until that happens, I'm releasing what I have as it's already been a productivity winner for me.
+cmdh (short for Command Helper) is a tool I made to help myself learn Linux commands. I'd know what I wanted to do, but wouldn't know the specific command. It works great for that. It turns out to also be pretty good at generating all sorts of commands, even highly specific and complex ones. It's saved me many hours already of searching through documentation everytime I need to do something in the terminal.
 
 Roadmap: The issues tracker contains possible improvements to the tool. There are some cool ideas that could be added to this to make it way more functional too. I will add them to the tracker as I think of them. I'm open to PRs with good ideas in them as well.
 
-## Usage
+Now with [ollama](https://ollama.ai/) support!
 
-To use it, you simply type something like: `cmdh 'Output the number of lines of code committed to this git repo last month'` and it will output something like this:
+## Installation
+
+1. Clone the repository:
+
+    `git clone https://github.com/pgibler/cmdh.git`
+
+2. Navigate to the project directory:
+
+    `cd cmdh`
+
+3. Set up the environment variables required for the ChatGPT API (you'll need to obtain an API key):
+
+    `echo "OPENAI_API_KEY=yourapikey" > .env`
+
+## Setup
+
+Once installed, run `cmdh configure`.
+
+You will need to set a `MODEL_NAME` whether you are using ollama or OpenAI. One of these must be set for the program to run.
+
+### ChatGPT
+
+To configure cmdh to use ChatGPT, set your `OPENAI_API_KEY` using `cmdh configure` and set the `MODEL_NAME` to `gpt-3.5` or `gpt-4`.
+
+### ollama
+
+To configure cmdh to use ollama, you must have an ollama server running locally with a model installed. You can install ollama and Mistral on Linux using the following commands:
 
 ```
-✔ Retrieving command... Output the number of lines of code committed to this ...
-setup commands: [ sudo apt-get update, sudo apt-get install git ]
-desire command: git log --since='1 month ago' --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines: %s total lines: %s\n",add,subs,loc }'
-assistant message: This command will show you the number of lines added and removed from your git repository over the past month. Please make sure to run this command from the root directory of your git repository.
-? Choose an option:
-    Run all commands (A)
-    Run setup commands (S)
->   Run desire command (D)
-    Quit (Q)
+curl https://ollama.ai/install.sh | sh
+ollama run mistral
+```
+
+Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434`.
+
+
+## Usage
+
+To use it, you simply type something like: `cmdh 'Output the number of lines of code committed to git last month'` and it will output something like this:
+
+```
+✔ Retrieving command... Output number of commits in the past month in this gi...
+desire command: git rev-list --count --since="1 month ago" HEAD
+assistant message: This command will output the number of commits made in the past month in the current git project. Make sure you are in the root directory of your git project when running this command.
+? Choose an option: Run desire command (D)
+Running: git rev-list --count --since="1 month ago" HEAD
+7
 ```
 
 Then if you run the desire command, you'll see something like this:
@@ -36,28 +71,4 @@ added lines: 63648 removed lines: 8315 total lines: 55333
 - Hotkey menu system for efficient usage
 - Interactively run the generated commands
 - Differentiates between shell command types: interactive and non-interactive
-
-## Installation
-
-1. Clone the repository:
-
-    `git clone https://github.com/pgibler/cmdh.git`
-
-2. Navigate to the project directory:
-
-    `cd cmdh`
-
-3. Set up the environment variables required for the ChatGPT API (you'll need to obtain an API key):
-
-    `echo "OPENAI_API_KEY=yourapikey" > .env`
-
-## Usage
-
-To use Linux Command Helper, simply provide a description of the task or command you want to accomplish as a command-line argument. Here are some examples:
-
-```
-cmdh 'Show system info.'
-cmdh 'Display CPU speed.'
-cmdh 'Monitor GPU temperature'
-cmdh 'Continously monitor all in-use socket connections.'
-```
+- Use either ollama for local execution or OpenAI models.
