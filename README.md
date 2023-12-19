@@ -14,7 +14,7 @@ Now with [ollama](https://ollama.ai/) support!
 git clone https://github.com/pgibler/cmdh.git
 cd cmdh
 ./cmdh.sh configure
-./cmdh.sh "Replace the word 'llm' with 'llama' in 'documentation.md' and output it to 'new.md'"
+./cmdh.sh "Replace the word llm with llama in 'documentation.md' and output it to 'new.md'"
 ```
 
 If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`. The bash script will detect which one to update automatically.
