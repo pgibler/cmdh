@@ -36,9 +36,10 @@ export default async function configure() {
     },
   ];
 
-  console.log("Configure your .env file for cmdh. Set the ollama URL to use ollama, or the OpenAI API Key to use OpenAI.")
+  console.log("Configure your .env file for cmdh.")
   console.log("The model name will determine whether OpenAI or ollama is used. Use gpt-3.5 or gpt-4 for OpenAI, otherwise ollama will be used.")
-  console.log("You only need to set one, but you can set both.")
+  console.log("Set the ollama URL to use ollama or the OpenAI API Key to use the gpt models.")
+  console.log("You must set one. You can set both if you want to switch between them.")
 
   const answers = await inquirer.prompt(questions);
 
