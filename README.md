@@ -17,7 +17,7 @@ cd cmdh
 ./cmdh.sh "Replace the word 'llm' with 'llama' in 'documentation.md' and output it to 'new.md'"
 ```
 
-If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`, depending on your system.
+If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`.
 
 ## Usage
 
