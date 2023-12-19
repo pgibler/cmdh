@@ -13,9 +13,11 @@ Now with [ollama](https://ollama.ai/) support!
 ```
 git clone https://github.com/pgibler/cmdh.git
 cd cmdh
-cmdh configure
-cmdh 'Display available hard drive space'
+./cmdh.sh configure
+./cmdh.sh 'Display available hard drive space'
 ```
+
+If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`, depending on your system.
 
 ## Usage
 
