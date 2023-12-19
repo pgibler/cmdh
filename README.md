@@ -6,41 +6,16 @@ Roadmap: The issues tracker contains possible improvements to the tool. There ar
 
 Now with [ollama](https://ollama.ai/) support!
 
-## Installation
+[cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
-1. Clone the repository:
-
-    `git clone https://github.com/pgibler/cmdh.git`
-
-2. Navigate to the project directory:
-
-    `cd cmdh`
-
-3. Set up the environment variables required for the ChatGPT API (you'll need to obtain an API key):
-
-    `echo "OPENAI_API_KEY=yourapikey" > .env`
-
-## Setup
-
-Once installed, run `cmdh configure`.
-
-You will need to set a `MODEL_NAME` whether you are using ollama or OpenAI. One of these must be set for the program to run.
-
-### ChatGPT
-
-To configure cmdh to use ChatGPT, set your `OPENAI_API_KEY` using `cmdh configure` and set the `MODEL_NAME` to `gpt-3.5` or `gpt-4`.
-
-### ollama
-
-To configure cmdh to use ollama, you must have an ollama server running locally with a model installed. You can install ollama and Mistral on Linux using the following commands:
+## Installation & Setup
 
 ```
-curl https://ollama.ai/install.sh | sh
-ollama run mistral
+git clone https://github.com/pgibler/cmdh.git
+cd cmdh
+cmdh configure
+cmdh 'Display available hard drive space'
 ```
-
-Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434`.
-
 
 ## Usage
 
@@ -63,8 +38,6 @@ Running: git log --since='1 month ago' --pretty=tformat: --numstat | gawk '{ add
 added lines: 63648 removed lines: 8315 total lines: 55333
 ```
 
-[cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
-
 ## Features
 
 - Build Linux commands from natural language
@@ -72,3 +45,20 @@ added lines: 63648 removed lines: 8315 total lines: 55333
 - Interactively run the generated commands
 - Differentiates between shell command types: interactive and non-interactive
 - Use either ollama for local execution or OpenAI models.
+
+## LLM support
+
+### ChatGPT
+
+To configure cmdh to use ChatGPT, set your `OPENAI_API_KEY` using `cmdh configure` and set the `MODEL_NAME` to `gpt-3.5` or `gpt-4`.
+
+### ollama
+
+To configure cmdh to use ollama, you must have an ollama server running locally with a model installed. You can install ollama and Mistral on Linux using the following commands:
+
+```
+curl https://ollama.ai/install.sh | sh
+ollama run mistral
+```
+
+Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434`.
