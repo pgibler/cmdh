@@ -1,6 +1,6 @@
 # cmdh - Create Linux commands from natural language
 
-cmdh (short for Command Helper) is a tool I made to help myself learn Linux commands. I'd know what I wanted to do, but wouldn't know the specific command. It works great for that. It turns out to also be pretty good at generating all sorts of commands, even highly specific and complex ones. It's saved me many hours already of searching through documentation everytime I need to do something in the terminal.
+cmdh (short for Command Helper) is a tool I made to help myself learn Linux commands. It uses LLM models provided by ollama or ChatGPT to convert the command query into a desired command. It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
 
 Roadmap: The issues tracker contains possible improvements to the tool. There are some cool ideas that could be added to this to make it way more functional too. I will add them to the tracker as I think of them. I'm open to PRs with good ideas in them as well.
 
