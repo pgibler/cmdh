@@ -1,4 +1,4 @@
-# cmdh - Request Linux commands using an LLM
+# cmdh - Generate Linux commands using an LLM
 
 cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or ChatGPT to convert a command request into a desired command.
 
