@@ -1,6 +1,6 @@
 # cmdh - Create Linux commands from natural language
 
-cmdh (short for Command Helper) is a tool the invokes LLM models provided by ollama or ChatGPT to convert a command query into a desired command.
+cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or ChatGPT to convert a command query into a desired command.
 
 It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
 
