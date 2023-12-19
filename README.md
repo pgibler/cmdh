@@ -1,8 +1,8 @@
 # cmdh - Create Linux commands from natural language
 
-cmdh (short for Command Helper) is a tool I made to help myself learn Linux commands. It uses LLM models provided by ollama or ChatGPT to convert the command query into a desired command. It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
+cmdh (short for Command Helper) is a tool the invokes LLM models provided by ollama or ChatGPT to convert a command query into a desired command.
 
-Roadmap: The issues tracker contains possible improvements to the tool. There are some cool ideas that could be added to this to make it way more functional too. I will add them to the tracker as I think of them. I'm open to PRs with good ideas in them as well.
+It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
 
 Now with [ollama](https://ollama.ai/) support!
 
@@ -66,3 +66,7 @@ ollama run mistral
 ```
 
 Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434`.
+
+## Roadmap
+
+The issues tracker contains possible improvements to the tool. There are some cool ideas that could be added to this to make it way more functional too. I will add them to the tracker as I think of them. I'm open to PRs with good ideas in them as well.
