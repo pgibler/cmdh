@@ -53,7 +53,7 @@ added lines: 63648 removed lines: 8315 total lines: 55333
 - Hotkey menu system for efficient usage
 - Interactively run the generated commands
 - Differentiates between shell command types: interactive and non-interactive
-- Use either ollama for local execution or OpenAI models.
+- Use either ollama for local execution or OpenAI models to use the gpt models remotely.
 
 ## LLM support
 
