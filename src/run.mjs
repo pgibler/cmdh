@@ -7,6 +7,7 @@ import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
 import prompt from './inquirer-interactive-list-prompt/index.mjs';
+import configure from './configure.mjs'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -36,7 +37,12 @@ async function main() {
   const promptArg = process.argv[2];
 
   if (promptArg) {
-    await handlePrompt(promptArg);
+    if (promptArg.trim() === 'configure') {
+      await configure();
+      return;
+    } else {
+      await handlePrompt(promptArg);
+    }
   } else {
     const input = await questionAsync('Enter your command request prompt: ');
     await handlePrompt(input);

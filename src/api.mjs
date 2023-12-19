@@ -32,6 +32,13 @@ const { OPENAI_API_KEY, MODEL_NAME, LOCAL_URL } = process.env;
 const api = {
   sendMessage: async (prompt, system) => {
     if (openAIModels.includes(MODEL_NAME)) {
+      const openAIApi = new ChatGPTAPI({
+        apiKey: OPENAI_API_KEY,
+        completionParams: {
+          model: 'gpt-4',
+          top_p: 0.2,
+        }
+      });
       return await openAIApi.sendMessage(prompt, { systemMessage: system });
     }
     return await ollamaResponse(prompt, system);
@@ -39,14 +46,6 @@ const api = {
 };
 
 import { ChatGPTAPI } from 'chatgpt';
-
-const openAIApi = new ChatGPTAPI({
-  apiKey: OPENAI_API_KEY,
-  completionParams: {
-    model: 'gpt-4',
-    top_p: 0.2,
-  }
-});
 
 const openAIModels = ['gpt-3.5', 'gpt-4'];
 
