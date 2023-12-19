@@ -8,7 +8,7 @@ Now with [ollama](https://ollama.ai/) support!
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
-## Installation
+## Setup
 
 ```
 git clone https://github.com/pgibler/cmdh.git
