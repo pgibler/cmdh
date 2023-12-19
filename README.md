@@ -19,7 +19,11 @@ cmdh 'Display available hard drive space'
 
 ## Usage
 
-To use it, you simply type something like: `cmdh 'Output the number of lines of code committed to git last month'` and it will output something like this:
+To use it, you simply type something like:
+
+`cmdh 'Output the number of lines of code committed to git last month'`
+
+The output will look something like this:
 
 ```
 ✔ Retrieving command... Output number of commits in the past month in this gi...
