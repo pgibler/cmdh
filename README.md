@@ -14,7 +14,7 @@ Now with [ollama](https://ollama.ai/) support!
 git clone https://github.com/pgibler/cmdh.git
 cd cmdh
 ./cmdh.sh configure
-./cmdh.sh 'Display available hard drive space'
+./cmdh.sh "Replace each instance of the word 'llm' with 'llama' in the file 'documentation.md' and output it to 'new.md'"
 ```
 
 If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`, depending on your system.
