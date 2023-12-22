@@ -27,11 +27,24 @@ function truncate(input, length) {
   return input;
 }
 
-const { OPENAI_API_KEY, MODEL_NAME, OLLAMA_HOST } = process.env;
+const { OPENAI_API_KEY, MODEL_NAME, OLLAMA_HOST, CMDH_API_KEY } = process.env;
 
 const api = {
   sendMessage: async (prompt, system) => {
-    if (openAIModels.includes(MODEL_NAME)) {
+    if (CMDH_API_KEY) {
+      const response = await fetch('http://localhost:3000/api/generate', {
+        method: 'POST',
+        body: JSON.stringify({
+          prompt,
+          system,
+          apiKey: process.env.CMDH_API_KEY,
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      return response.json();
+    } else if (openAIModels.includes(MODEL_NAME)) {
       const openAIApi = new ChatGPTAPI({
         apiKey: OPENAI_API_KEY,
         completionParams: {

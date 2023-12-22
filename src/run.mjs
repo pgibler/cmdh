@@ -1,12 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
-import * as readline from 'readline';
 import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
 import prompt from './inquirer-interactive-list-prompt/index.mjs';
+import inquirer from 'inquirer';
 import configure from './configure.mjs'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -14,17 +14,15 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const readFile = promisify(fs.readFile);
 
 async function main() {
-  async function questionAsync(prompt) {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
+  async function questionAsync(message) {
+    const answers = await inquirer.prompt({
+      name: 'COMMAND_REQUEST',
+      type: 'input',
+      message,
+      default: 'Output current working directory',
     });
-    return new Promise((resolve) => {
-      rl.question(prompt, (answer) => {
-        rl.close();
-        resolve(answer);
-      });
-    });
+
+    return answers.COMMAND_REQUEST;
   }
 
   async function getSystemMessage() {
