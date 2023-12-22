@@ -91,12 +91,12 @@ async function main() {
 async function getPromptChoice(nonInteractive, setupCommands) {
   const options = [
     {
-      name: 'Run desire command (d)',
+      name: 'Run desire command',
       value: 'desire',
       key: 'd',
     },
     {
-      name: 'Quit (q)',
+      name: 'Quit',
       value: 'quit',
       key: 'q',
     },
@@ -107,12 +107,12 @@ async function getPromptChoice(nonInteractive, setupCommands) {
   );
 
   if (setupCommands.length > 0) {
-    options.unshift({ name: 'Run setup commands (s)', value: 'setup', key: 's' })
-    options.unshift({ name: 'Run all commands (a)', value: 'all', key: 'a' });
+    options.unshift({ name: 'Run setup commands', value: 'setup', key: 's' })
+    options.unshift({ name: 'Run all commands', value: 'all', key: 'a' });
   }
   if (!nonInteractive) {
     const spliceIndex = options.findIndex(option => option.value === 'desire') + 1
-    const copyChoice = { name: 'Copy command to clipboard (c)', value: 'copy', key: 'c', };
+    const copyChoice = { name: 'Copy command to clipboard', value: 'copy', key: 'c', };
     options.splice(spliceIndex, 0, copyChoice);
   }
 
