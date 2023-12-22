@@ -33,10 +33,10 @@ setup commands: [ sudo apt-get update, sudo apt-get install git ]
 desire command: git diff --stat `git rev-list -n 1 --before="1 month ago" master`
 assistant message: This command will show you the number of lines of code that were committed to git last month. Please make sure you are in the correct directory where your git repository is located before running this command.
 ? Choose an option:
-    Run all commands (A)
-    Run setup commands (S)
->   Run desire command (D)
-    Quit (Q)
+    Run all commands (a)
+    Run setup commands (s)
+>   Run desire command (d)
+    Quit (q)
 ```
 
 Then if you run the desire command, you'll see something like this:

@@ -5,8 +5,7 @@ import * as readline from 'readline';
 import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
-import chalk from 'chalk';
-import prompt from './inquirer-interactive-list-prompt/index.mjs';
+import prompt from './src/inquirer-interactive-list-prompt';
 import configure from './configure.mjs'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -66,19 +65,19 @@ async function main() {
       choice = defaultOption;
     }
     switch (choice.toLowerCase()) {
-      case 'a': // run all
+      case 'all': // run all
         await setupAndRunCommands(setupCommands, runCommand);
         break;
-      case 'd': // desire command
+      case 'desire': // desire command
         await runCommands([runCommand]);
         break;
-      case 'c':
+      case 'copy':
         copyCommand(runCommand);
         break;
-      case 's': // Run setup commands
+      case 'setup': // Run setup commands
         await runCommands(setupCommands);
         break;
-      case 'q':
+      case 'quit':
         console.log('👋');
         break;
       default:
@@ -91,13 +90,13 @@ async function main() {
 async function getPromptChoice(nonInteractive, setupCommands) {
   const options = [
     {
-      name: 'Run desire command (D)',
-      value: 'd',
+      name: 'Run desire command (d)',
+      value: 'desire',
       key: 'd',
     },
     {
-      name: 'Quit (Q)',
-      value: 'q',
+      name: 'Quit (q)',
+      value: 'quit',
       key: 'q',
     },
   ];
@@ -107,12 +106,12 @@ async function getPromptChoice(nonInteractive, setupCommands) {
   );
 
   if (setupCommands.length > 0) {
-    options.unshift({ name: 'Run setup commands (S)', value: 's', key: 's' })
-    options.unshift({ name: 'Run all commands (A)', value: 'a', key: 'a' });
+    options.unshift({ name: 'Run setup commands (s)', value: 'setup', key: 's' })
+    options.unshift({ name: 'Run all commands (a)', value: 'all', key: 'a' });
   }
   if (!nonInteractive) {
-    const spliceIndex = options.findIndex(option => option.value === 'd') + 1
-    const copyChoice = { name: 'Copy command to clipboard (C)', value: 'c', key: 'c', };
+    const spliceIndex = options.findIndex(option => option.value === 'desire') + 1
+    const copyChoice = { name: 'Copy command to clipboard (c)', value: 'copy', key: 'c', };
     options.splice(spliceIndex, 0, copyChoice);
   }
 
@@ -120,7 +119,6 @@ async function getPromptChoice(nonInteractive, setupCommands) {
     message: 'Choose an option:',
     choices: options,
     default: defaultOption,
-    renderer: line => chalk.cyan(`> ${line}`)
   });
 
   return answer;
