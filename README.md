@@ -8,7 +8,7 @@ Now with [ollama](https://ollama.ai/) support!
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
-## Installation
+## Installation & Setup
 
 ```
 git clone https://github.com/pgibler/cmdh.git
@@ -42,7 +42,7 @@ assistant message: This command will show you the number of lines of code that w
 Then if you run the desire command, you'll see something like this:
 
 ```
-? Choose an option: Run desire command (D)
+? Choose an option: Run desire command (d)
 Running: git log --since='1 month ago' --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines: %s total lines: %s\n",add,subs,loc }'
 added lines: 63648 removed lines: 8315 total lines: 55333
 ```

@@ -5,7 +5,8 @@ import * as readline from 'readline';
 import { startChat } from './api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
-import prompt from './src/inquirer-interactive-list-prompt';
+import chalk from 'chalk';
+import prompt from './inquirer-interactive-list-prompt/index.mjs';
 import configure from './configure.mjs'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -101,8 +102,8 @@ async function getPromptChoice(nonInteractive, setupCommands) {
     },
   ];
 
-  const defaultOption = !nonInteractive ? 'c' : (
-    nonInteractive && setupCommands.length > 0 ? 'a' : 'd'
+  const defaultOption = !nonInteractive ? 'copy' : (
+    nonInteractive && setupCommands.length > 0 ? 'all' : 'desire'
   );
 
   if (setupCommands.length > 0) {
