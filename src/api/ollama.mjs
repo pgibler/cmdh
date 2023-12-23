@@ -10,7 +10,7 @@ export async function ollamaResponse(prompt, system) {
   const requestBody = JSON.stringify({
     model: process.env["MODEL_NAME"],
     prompt: prompt,
-    system: system,  // Simplified for testing
+    system: system,
     stream: false,
   });
 
@@ -27,12 +27,11 @@ export async function ollamaResponse(prompt, system) {
       throw new Error(`HTTP Error: ${response.status}`);
     }
 
-    const responseJson = await response.json(); // Read the response body here
+    const responseJson = await response.json();
 
-    // Use the responseJson for further processing
     return {
       text: responseJson.response
-    }; // Adjust according to your needs
+    };
   } catch (error) {
     console.error('Error in fetch request:', error);
     throw error;
