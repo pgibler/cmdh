@@ -37,7 +37,7 @@ const openAIModels = ['gpt-3.5-turbo', 'gpt-4'];
 const api = {
   sendMessage: async (prompt, system) => {
     if (CMDH_API_KEY.trim() !== '') {
-      const response = await fetch('https://cmdh.ai/api/generate', {
+      const response = await fetch(`${process.env.CMDH_API_BASE}/api/generate`, {
         method: 'POST',
         body: JSON.stringify({
           prompt,
