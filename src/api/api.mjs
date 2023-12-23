@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import { oraPromise } from 'ora';
 import path from 'path';
 import { ollamaResponse } from './ollama.mjs';
+import { readStream } from './stream.mjs';
+import OpenAI from 'openai';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const envPath = path.resolve(__dirname, '../../.env');
@@ -28,39 +30,78 @@ function truncate(input, length) {
   return input;
 }
 
-const { OPENAI_API_KEY, MODEL_NAME, CMDH_API_KEY } = process.env;
-
-import { ChatGPTAPI } from 'chatgpt';
+const { MODEL_NAME, CMDH_API_KEY } = process.env;
 
 const openAIModels = ['gpt-3.5-turbo', 'gpt-4'];
+const openai = new OpenAI();
 
 const api = {
   sendMessage: async (prompt, system) => {
     if (CMDH_API_KEY.trim() !== '') {
-      const response = await fetch(`${process.env.CMDH_API_BASE}/api/generate`, {
-        method: 'POST',
-        body: JSON.stringify({
-          prompt,
-          system,
-          apiKey: process.env.CMDH_API_KEY,
-          model: MODEL_NAME
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      return response.json();
+      return await fetchCmdhAPI(prompt, system);
     } else if (openAIModels.includes(MODEL_NAME)) {
-      const openAIApi = new ChatGPTAPI({
-        apiKey: OPENAI_API_KEY,
-        completionParams: {
-          model: MODEL_NAME,
-          top_p: 0.2,
-        }
-      });
-      return await openAIApi.sendMessage(prompt, { systemMessage: system });
+      return await fetchOpenAIApi(prompt, system);
     } else {
       return await ollamaResponse(prompt, system);
     }
   }
 };
+
+async function fetchOpenAIApi(prompt, system) {
+  const stream = await openai.chat.completions.create({
+    model: MODEL_NAME,
+    messages: [
+      { role: 'system', content: system },
+      { role: 'user', content: prompt }
+    ],
+    stream: true,
+  });
+
+  try {
+    let buffer = '';
+    // Collecting data from the stream
+    for await (const chunk of stream) {
+      // Assuming chunk is a string or can be converted to string
+      const content = chunk.choices[0].delta.content
+      if (content) {
+        buffer += content;
+      }
+    }
+    return buffer;
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function fetchCmdhAPI(prompt, system) {
+  const apiBaseUrl = process.env.CMDH_API_BASE; // Ensure this is a valid URL
+  const apiKey = process.env.CMDH_API_KEY; // Your API key
+  const endpoint = '/api/generate'; // API endpoint
+
+  const url = new URL(endpoint, apiBaseUrl).toString(); // Construct the full URL
+
+  const requestBody = {
+    prompt,
+    system,
+    apiKey,
+    model: MODEL_NAME
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  // Handle the stream
+  const reader = response.body;
+  const streamResponse = await readStream(reader);
+
+  return streamResponse.value;
+}

@@ -29,9 +29,7 @@ export async function ollamaResponse(prompt, system) {
 
     const responseJson = await response.json();
 
-    return {
-      text: responseJson.response
-    };
+    return responseJson.response;
   } catch (error) {
     console.error('Error in fetch request:', error);
     throw error;

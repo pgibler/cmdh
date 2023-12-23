@@ -14,6 +14,7 @@ export default async function configure() {
     MODEL_NAME: process.env.MODEL_NAME || 'gpt-3.5',
     OLLAMA_HOST: process.env.OLLAMA_HOST || 'http://localhost:11434',
     CMDH_API_KEY: process.env.CMDH_API_KEY || '',
+    CMDH_API_BASE: process.env.CMDH_API_BASE || 'https://cmdh.ai/',
   };
 
   const questions = [
@@ -51,7 +52,13 @@ export default async function configure() {
   const answers = await inquirer.prompt(questions);
 
   // Construct the new configuration string, conditionally including OPENAI_API_KEY
-  let newConfig = `OPENAI_API_KEY=${answers.OPENAI_API_KEY}\nMODEL_NAME=${answers.MODEL_NAME}\nOLLAMA_HOST=${answers.OLLAMA_HOST}\nCMDH_API_KEY=${answers.CMDH_API_KEY}\n`;
+  let newConfig = [
+    `OPENAI_API_KEY=${answers.OPENAI_API_KEY}`,
+    `MODEL_NAME=${answers.MODEL_NAME}`,
+    `OLLAMA_HOST=${answers.OLLAMA_HOST}`,
+    `CMDH_API_KEY=${answers.CMDH_API_KEY}`,
+    `CMDH_API_BASE=${currentConfig.CMDH_API_BASE}`
+  ].join('\n')
 
   fs.writeFileSync('.env', newConfig);
   console.log('Configuration updated.');

@@ -50,7 +50,7 @@ async function main() {
     const systemMessage = await getSystemMessage();
 
     const response = await startChat(input, systemMessage);
-    const { setupCommands, runCommand, nonInteractive, assistantMessage } = parseResponse(response.text);
+    const { setupCommands, runCommand, nonInteractive, assistantMessage } = parseResponse(response);
 
     if (setupCommands.length > 0) {
       console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
