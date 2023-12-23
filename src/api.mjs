@@ -31,13 +31,14 @@ const { OPENAI_API_KEY, MODEL_NAME, OLLAMA_HOST, CMDH_API_KEY } = process.env;
 
 const api = {
   sendMessage: async (prompt, system) => {
-    if (CMDH_API_KEY) {
-      const response = await fetch('http://localhost:3000/api/generate', {
+    if (CMDH_API_KEY.trim() !== '') {
+      const response = await fetch('https://cmdh.ai/api/generate', {
         method: 'POST',
         body: JSON.stringify({
           prompt,
           system,
           apiKey: process.env.CMDH_API_KEY,
+          model: MODEL_NAME
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -48,7 +49,7 @@ const api = {
       const openAIApi = new ChatGPTAPI({
         apiKey: OPENAI_API_KEY,
         completionParams: {
-          model: 'gpt-4',
+          model: MODEL_NAME,
           top_p: 0.2,
         }
       });
