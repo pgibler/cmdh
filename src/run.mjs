@@ -5,7 +5,7 @@ import { startChat } from './api/api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
-import prompt from './inquirer-interactive-list-prompt/index.mjs';
+import prompt from 'inquirer-interactive-list-prompt';
 import inquirer from 'inquirer';
 import configure from './configure.mjs'
 
