@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
 import { oraPromise } from 'ora';
 import path from 'path';
+import { ollamaResponse } from './ollama.mjs';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(__dirname, '../.env');
+const envPath = path.resolve(__dirname, '../../.env');
 
 dotenv.config({ path: envPath });
 
@@ -27,7 +28,11 @@ function truncate(input, length) {
   return input;
 }
 
-const { OPENAI_API_KEY, MODEL_NAME, OLLAMA_HOST, CMDH_API_KEY } = process.env;
+const { OPENAI_API_KEY, MODEL_NAME, CMDH_API_KEY } = process.env;
+
+import { ChatGPTAPI } from 'chatgpt';
+
+const openAIModels = ['gpt-3.5-turbo', 'gpt-4'];
 
 const api = {
   sendMessage: async (prompt, system) => {
@@ -54,46 +59,8 @@ const api = {
         }
       });
       return await openAIApi.sendMessage(prompt, { systemMessage: system });
+    } else {
+      return await ollamaResponse(prompt, system);
     }
-    return await ollamaResponse(prompt, system);
   }
 };
-
-import { ChatGPTAPI } from 'chatgpt';
-
-const openAIModels = ['gpt-3.5', 'gpt-4'];
-
-async function ollamaResponse(prompt, system) {
-  const response = await fetch(path.join(OLLAMA_HOST, '/api/generate'), {
-    method: 'POST',
-    body: JSON.stringify({
-      model: MODEL_NAME,
-      prompt,
-      system
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-
-  if (!response.body) {
-    throw new Error('Response body is not readable');
-  }
-
-  const reader = response.body.getReader();
-  let completeResponse = '';
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) {
-      break;
-    }
-    const chunk = new TextDecoder("utf-8").decode(value);
-    const json = JSON.parse(chunk);
-    completeResponse += json.response;
-  }
-
-  return {
-    text: completeResponse
-  };
-}

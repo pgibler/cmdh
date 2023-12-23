@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
-import { startChat } from './api.mjs';
+import { startChat } from './api/api.mjs';
 import { getSystemInfo } from './system.mjs';
 import clipboardy from 'clipboardy';
 import chalk from 'chalk';
