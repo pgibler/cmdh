@@ -17,6 +17,8 @@ cd cmdh
 ./cmdh.sh "Replace the word llm with llama in documentation.md and output it to new.md"
 ```
 
+Make sure you run `cmdh configure` before using it so you can configure the ollama API endpoint & your OpenAI API key, depending on which you want to use.
+
 If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`. The bash script will detect which one to update automatically.
 
 ## Usage
