@@ -8,18 +8,23 @@ Now with [ollama](https://ollama.ai/) support!
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
-## Installation & Setup
+## Installation
 
 ```
+# Download
 git clone https://github.com/pgibler/cmdh.git
+# Install
 cd cmdh
+./scripts/install.sh
+./scripts/update_path.sh # optional
+# Run
 ./cmdh.sh configure
 ./cmdh.sh "Replace the word llm with llama in documentation.md and output it to new.md"
 ```
 
 Run `cmdh configure` before using it so you can configure the ollama API endpoint & your OpenAI API key, depending on which you want to use.
 
-If you would like to make it available in your `PATH`, you can run `./install.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`. The bash script will detect which one to update automatically. Then you can run it using `cmdh 'Command to look up'` instead of writing out the full path of the shell script.
+If you would like to make it available in your `PATH`, you can run `./update_path.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`. The bash script will detect which one to update automatically. Then you can run it using `cmdh 'Command to look up'` instead of writing out the full path of the shell script.
 
 ## Usage
 
