@@ -15,8 +15,8 @@ Now with [ollama](https://ollama.ai/) support!
 git clone https://github.com/pgibler/cmdh.git
 # Install
 cd cmdh
-./scripts/install.sh
-./scripts/update_path.sh # optional
+./install.sh
+./update_path.sh # optional
 # Run
 ./cmdh.sh configure
 ./cmdh.sh "Replace the word llm with llama in documentation.md and output it to new.md"
