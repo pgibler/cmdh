@@ -18,8 +18,8 @@ cd cmdh
 ./install.sh
 ./update_path.sh # optional
 # Run
-./cmdh.sh configure
-./cmdh.sh "Replace the word llm with llama in documentation.md and output it to new.md"
+./run.sh configure
+./run.sh "Replace the word llm with llama in documentation.md and output it to new.md"
 ```
 
 Run `cmdh configure` before using it so you can configure the ollama API endpoint & your OpenAI API key, depending on which you want to use.
