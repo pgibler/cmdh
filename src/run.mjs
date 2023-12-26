@@ -3,7 +3,6 @@ import * as path from 'path';
 import { promisify } from 'util';
 import { startChat } from './api/api.mjs';
 import { getSystemInfo } from './system.mjs';
-import clipboardy from 'clipboardy';
 import chalk from 'chalk';
 import prompt from 'inquirer-interactive-list-prompt';
 import inquirer from 'inquirer';
@@ -55,7 +54,7 @@ async function main() {
     if (setupCommands.length > 0) {
       console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
     }
-    console.log(chalk.green('desire command:'), chalk.yellow(runCommand));
+    console.log(chalk.green('desired command:'), chalk.yellow(runCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
     let choice = await getPromptChoice(nonInteractive, setupCommands);
@@ -65,15 +64,15 @@ async function main() {
     }
     switch (choice.toLowerCase()) {
       case 'all': // run all
-        await setupAndRunCommands(setupCommands, runCommand);
+        await runAllCommands(setupCommands, runCommand);
         break;
-      case 'desire': // desire command
+      case 'desired':
         await runCommands([runCommand]);
         break;
-      case 'copy':
+      case 'emit':
         copyCommand(runCommand);
         break;
-      case 'setup': // Run setup commands
+      case 'setup':
         await runCommands(setupCommands);
         break;
       case 'quit':
@@ -89,7 +88,7 @@ async function main() {
 async function getPromptChoice(nonInteractive, setupCommands) {
   const options = [
     {
-      name: 'Run desire command',
+      name: 'Run desired command',
       value: 'desire',
       key: 'd',
     },
@@ -124,7 +123,7 @@ async function getPromptChoice(nonInteractive, setupCommands) {
 }
 
 function parseResponse(response) {
-  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\ndesire command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
+  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\ndesired command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
   const match = response.match(regex);
 
   if (!match) {
@@ -135,18 +134,18 @@ function parseResponse(response) {
     .split('\n')
     .filter((line) => line.trim() !== '')
     .map((line) => line.replace(/^\d+\.\s*/, ''));
-  const runCommand = match[2];
+  const desiredCommand = match[2];
   const nonInteractive = match[3].trim().toLowerCase() === 'yes';
   const assistantMessage = match[4];
 
-  return { setupCommands, runCommand, nonInteractive, assistantMessage };
+  return { setupCommands, desiredCommand, nonInteractive, assistantMessage };
 }
 
 import { spawn } from 'child_process';
 
-async function setupAndRunCommands(setupCommands, runCommand) {
+async function runAllCommands(setupCommands, desiredCommand) {
   await runCommands(setupCommands);
-  await runCommands([runCommand]);
+  await runCommands([desiredCommand]);
 }
 
 async function runCommands(commands) {
@@ -179,9 +178,23 @@ function runCommandWithSpawn(command) {
   });
 }
 
-function copyCommand(command) {
-  clipboardy.writeSync(command);
-  console.log('Command copied to clipboard');
+async function copyCommand(command, showImportErrorMessage = false) {
+  try {
+    // Dynamically import clipboardy
+    const clipboardy = await import('clipboardy');
+
+    // If import succeeds, use clipboardy to copy the command
+    clipboardy.writeSync(command);
+    console.log('Command copied to clipboard');
+  } catch (error) {
+    // Fallback to logging the command if import or execution fails
+    if (showImportErrorMessage) {
+      console.log('Failed to copy command using clipboardy. Please manually copy the following command:');
+    }
+    console.log(command);
+  }
 }
+
+
 
 await main();

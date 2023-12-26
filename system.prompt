@@ -14,7 +14,7 @@ setup commands:
 ...
 X. <command n>
 
-desire command: <the command to run>
+desired command: <the command to run>
 
 runnable in non-interactive shell: <yes or no>
 
