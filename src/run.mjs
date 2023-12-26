@@ -89,7 +89,7 @@ async function getPromptChoice(nonInteractive, setupCommands) {
   const options = [
     {
       name: 'Run desired command',
-      value: 'desire',
+      value: 'desired',
       key: 'd',
     },
     {
