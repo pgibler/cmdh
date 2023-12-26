@@ -100,7 +100,7 @@ async function getPromptChoice(nonInteractive, setupCommands) {
   ];
 
   const defaultOption = !nonInteractive ? 'copy' : (
-    nonInteractive && setupCommands.length > 0 ? 'all' : 'desire'
+    nonInteractive && setupCommands.length > 0 ? 'all' : 'desired'
   );
 
   if (setupCommands.length > 0) {
