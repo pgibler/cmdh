@@ -33,6 +33,8 @@ if [ "$choice" = "Y" -o "$choice" = "y" -o "$choice" = "yes" -o "$choice" = "" ]
     fi
 fi
 
+cp .env.example .env
+
 node ./src/run.mjs configure
 
 echo "Installation complete! You can now use the 'cmdh' command."
