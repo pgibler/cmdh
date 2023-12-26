@@ -55,8 +55,13 @@ npm install
 # Setup .env file
 node ./src/run.mjs configure
 
-# Alias command to be added
-alias_cmd="alias cmdh='node ~/cmdh/src/run.mjs'"
+#!/bin/bash
+
+# Get the directory where the install script is located
+CMDH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Alias command using the dynamically determined path
+alias_cmd="alias cmdh='node $CMDH_DIR/src/run.mjs'"
 
 # Function to add alias and reload config for Bash and Zsh
 add_alias_and_reload() {
@@ -76,7 +81,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     echo "Alias added to .zshrc and reloaded."
 elif [ -n "$FISH_VERSION" ]; then
     # Fish shell
-    echo "set -Ux cmdh 'node ~/cmdh/src/run.mjs'" | fish
+    echo "set -Ux cmdh 'node $CMDH_DIR/src/run.mjs'" | fish
     echo "Alias added to Fish universal variables."
 else
     echo "Unsupported shell. Please add the alias manually to your shell initializer."
