@@ -49,12 +49,12 @@ async function main() {
     const systemMessage = await getSystemMessage();
 
     const response = await startChat(input, systemMessage);
-    const { setupCommands, runCommand, nonInteractive, assistantMessage } = parseResponse(response);
+    const { setupCommands, desiredCommand, nonInteractive, assistantMessage } = parseResponse(response);
 
     if (setupCommands.length > 0) {
       console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
     }
-    console.log(chalk.green('desired command:'), chalk.yellow(runCommand));
+    console.log(chalk.green('desired command:'), chalk.yellow(desiredCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
     let choice = await getPromptChoice(nonInteractive, setupCommands);
@@ -64,13 +64,13 @@ async function main() {
     }
     switch (choice.toLowerCase()) {
       case 'all': // run all
-        await runAllCommands(setupCommands, runCommand);
+        await runAllCommands(setupCommands, desiredCommand);
         break;
       case 'desired':
-        await runCommands([runCommand]);
+        await runCommands([desiredCommand]);
         break;
       case 'emit':
-        copyCommand(runCommand);
+        copyCommand(desiredCommand);
         break;
       case 'setup':
         await runCommands(setupCommands);
