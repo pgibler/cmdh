@@ -21,9 +21,7 @@ cmdh "Replace the word llm with llama in documentation.md and output it to new.m
 
 Current supports Debian, Arch, and RHEL based systems for install.
 
-If you have another system, you will need to install the packages manually.
-
-
+If you have another system, you will need to install the packages manually. Check out `install.sh` in the cmdh folder for the logic on how to install it on other systems and adapt it to your own, or better yet, open a PR.
 
 ## Usage
 
