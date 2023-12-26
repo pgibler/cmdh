@@ -10,21 +10,20 @@ Now with [ollama](https://ollama.ai/) support!
 
 ## Installation
 
+Set up and configure the project by running these commands:
+
 ```
-# Download
-git clone https://github.com/pgibler/cmdh.git
-# Install
-cd cmdh
-./install.sh
-./update_path.sh # optional
-# Run
-./run.sh configure
-./run.sh "Replace the word llm with llama in documentation.md and output it to new.md"
+git clone https://github.com/pgibler/cmdh.git && cd cmdh && ./install.sh
+cmdh "Replace the word llm with llama in documentation.md and output it to new.md"
 ```
 
-Run `cmdh configure` before using it so you can configure the ollama API endpoint & your OpenAI API key, depending on which you want to use.
+### Distro support
 
-If you would like to make it available in your `PATH`, you can run `./update_path.sh` from the cmdh folder to update your `.bashrc` or `.zshrc`. The bash script will detect which one to update automatically. Then you can run it using `cmdh 'Command to look up'` instead of writing out the full path of the shell script.
+Current supports Debian, Arch, and RHEL based systems for install.
+
+If you have another system, you will need to install the packages manually.
+
+
 
 ## Usage
 
@@ -66,7 +65,11 @@ added lines: 63648 removed lines: 8315 total lines: 55333
 
 ### ChatGPT
 
-To configure cmdh to use ChatGPT, set your `OPENAI_API_KEY` using `cmdh configure` and set the `MODEL_NAME` to `gpt-3.5` or `gpt-4`.
+You must get an OpenAI access key to run cmdh using ChatGPT.
+
+Supported models
+- `gpt-3.5-turbo`
+- `gpt-4`
 
 ### ollama
 
@@ -77,8 +80,8 @@ curl https://ollama.ai/install.sh | sh
 ollama run mistral
 ```
 
-Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434`.
+Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434` in both ollama and the .env file.
 
 ## Roadmap
 
-The issues tracker contains possible improvements to the tool. There are some cool ideas that could be added to this to make it way more functional too. I will add them to the tracker as I think of them. I'm open to PRs with good ideas in them as well.
+The issue tracker is mostly feature requests I have put in so I don't forget them. If you have any bug reports or good ideas, please include them in the tracker.
