@@ -108,7 +108,7 @@ async function getPromptChoice(nonInteractive, setupCommands) {
     options.unshift({ name: 'Run all commands', value: 'all', key: 'a' });
   }
   if (!nonInteractive) {
-    const spliceIndex = options.findIndex(option => option.value === 'desire') + 1
+    const spliceIndex = options.findIndex(option => option.value === 'desired') + 1
     const copyChoice = { name: 'Copy command to clipboard', value: 'copy', key: 'c', };
     options.splice(spliceIndex, 0, copyChoice);
   }
