@@ -19,7 +19,7 @@ npm install
 
 # Ask user to run update_path.sh
 read -p "Do you want to update the PATH variable? (Y/n): " choice
-if [ "$choice" = "Y" -o "$choice" = "y" -o "$choice" = "yes" ]; then
+if [ "$choice" = "Y" -o "$choice" = "y" -o "$choice" = "yes" -o "$choice" = "" ]; then
     # Set up the alias in .bashrc or .zshrc
     if [ -n "$BASH_VERSION" ]; then
       echo "alias cmdh='node ~/cmdh/src/run.mjs'" >> ~/.bashrc
