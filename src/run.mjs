@@ -12,7 +12,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const readFile = promisify(fs.readFile);
 
-async function main() {
+export async function run() {
   async function questionAsync(message) {
     const answers = await inquirer.prompt({
       name: 'COMMAND_REQUEST',
@@ -194,7 +194,3 @@ async function copyCommand(command, showImportErrorMessage = false) {
     console.log(command);
   }
 }
-
-
-
-await main();

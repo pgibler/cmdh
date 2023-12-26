@@ -9,5 +9,30 @@
     "inquirer-interactive-list-prompt": "^1.0.4",
     "openai": "^4.24.0",
     "ora": "^6.3.0"
-  }
+  },
+  "description": "cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or ChatGPT to convert a command request into a desired command.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgibler/cmdh.git"
+  },
+  "keywords": [
+    "ai",
+    "terminal",
+    "shell",
+    "linux",
+    "command",
+    "assistant"
+  ],
+  "author": "gibler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pgibler/cmdh/issues"
+  },
+  "homepage": "https://github.com/pgibler/cmdh#readme"
 }
