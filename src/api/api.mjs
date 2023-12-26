@@ -37,11 +37,12 @@ const openai = new OpenAI();
 
 const api = {
   sendMessage: async (prompt, system) => {
-    if (CMDH_API_KEY.trim() !== '') {
+    const LLM_HOST = process.env.LLM_HOST;
+    if (LLM_HOST === 'cmdh') {
       return await fetchCmdhAPI(prompt, system);
-    } else if (openAIModels.includes(MODEL_NAME)) {
+    } else if (LLM_HOST === 'OpenAI') {
       return await fetchOpenAIApi(prompt, system);
-    } else {
+    } else if (LLM_HOST === 'ollama') {
       return await ollamaResponse(prompt, system);
     }
   }
