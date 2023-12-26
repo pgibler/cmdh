@@ -50,6 +50,8 @@ npm install
 # Setup .env file
 node ./src/run.mjs configure
 
+echo 'Creating symlink to /usr/local/bin/cmdh...'
+
 # Get the directory where the install script is located
 CMDH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
