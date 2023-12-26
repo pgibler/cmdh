@@ -33,4 +33,6 @@ if [ "$choice" = "Y" -o "$choice" = "y" -o "$choice" = "yes" -o "$choice" = "" ]
     fi
 fi
 
+./src/run.mjs configure
+
 echo "Installation complete! You can now use the 'cmdh' command."
