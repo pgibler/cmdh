@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Run cmdh",
-      "program": "${workspaceFolder}/src/run.mjs",
+      "program": "${workspaceFolder}/index.mjs",
       "console": "integratedTerminal",
       "args": []
     }

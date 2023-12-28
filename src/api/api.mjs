@@ -46,8 +46,9 @@ const api = {
 async function fetchOpenAIApi(prompt, system) {
   try {
     const openai = new OpenAI();
+
     const stream = await openai.chat.completions.create({
-      model: MODEL_NAME,
+      model: process.env.MODEL_NAME,
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: prompt }
@@ -67,7 +68,7 @@ async function fetchOpenAIApi(prompt, system) {
       }
       return buffer;
     } catch (e) {
-      throw e;
+      console.log("Failed to read stream: ", e);
     }
   } catch (e) {
     if (e.message.includes('OPENAI_API_KEY')) {
