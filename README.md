@@ -10,8 +10,8 @@ Now with [ollama](https://ollama.ai/) support!
 
 ## Prerequisites
 
-- NodeJS
-- npm
+- NodeJS - tested on version 20.0.9
+- npm - tested on version 10.2.3
 
 ## Installation
 
