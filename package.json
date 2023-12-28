@@ -10,8 +10,7 @@
     "inquirer-interactive-list-prompt": "^1.0.4",
     "openai": "^4.24.0",
     "ora": "^6.3.0",
-    "ts-loader": "^9.5.1",
-    "ts-node": "^10.9.2"
+    "ts-loader": "^9.5.1"
   },
   "description": "cmdh (i.e. command helper) is a program that invokes an LLM model to convert a command request into a desired command, which you can then execute.",
   "version": "0.0.1",
