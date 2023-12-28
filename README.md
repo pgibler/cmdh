@@ -8,6 +8,11 @@ Now with [ollama](https://ollama.ai/) support!
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
+## Prerequisites
+
+- NodeJS
+- npm
+
 ## Installation
 
 Set up and configure the project by running these commands:
@@ -93,4 +98,4 @@ The issue tracker is mostly feature requests I have put in so I don't forget the
 
 ## Issues
 
-If you run into any issues installing or running cmdh, please open a ticket in the project tracker. Include a detailed bug report with stacktraces and inputs and the mode of operation (OpenAI or ollama). 
+If you run into any issues installing or running cmdh, please open a ticket in the project tracker. Include a detailed bug report with stacktraces and inputs and the mode of operation (OpenAI or ollama).
