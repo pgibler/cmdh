@@ -21,13 +21,13 @@ echo "npm version: $NPM_VERSION"
 npm install
 
 # Setup .env file
-node ./src/run.mjs configure
+node ./index.mjs configure
 
 # Get the directory where the install script is located
 CMDH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Alias command using the dynamically determined path
-alias_cmd="alias cmdh='node $CMDH_DIR/src/run.mjs'"
+alias_cmd="alias cmdh='node $CMDH_DIR/index.mjs'"
 
 # Function to add alias and reload config for Bash and Zsh
 add_alias_and_reload() {
