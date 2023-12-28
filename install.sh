@@ -11,8 +11,8 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
-NODE_VERSION=node -v
-NPM_VERSION=npm --version
+NODE_VERSION="$(node --version)"
+NPM_VERSION="$(npm --version)"
 
 echo "Node version: $NODE_VERSION"
 echo "npm version: $NPM_VERSION"
