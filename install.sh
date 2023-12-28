@@ -56,4 +56,4 @@ else
 fi
 
 echo "Installation complete!"
-echo "Reload your config file (source .bashrc, source .zshrc, etc.) or open a new terminal session to use 'cmdh' command."
+echo "Reminder: reload your shell config file or open a new terminal session to use 'cmdh' command."
