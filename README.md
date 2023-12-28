@@ -90,3 +90,7 @@ Once the server is running, make sure the base URL of the ollama server matches 
 ## Roadmap
 
 The issue tracker is mostly feature requests I have put in so I don't forget them. If you have any bug reports or good ideas, please include them in the tracker.
+
+## Issues
+
+If you run into any issues installing or running cmdh, please open a ticket in the project tracker. Include a detailed bug report with stacktraces and inputs and the mode of operation (OpenAI or ollama). 
