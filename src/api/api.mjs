@@ -30,11 +30,6 @@ function truncate(input, length) {
   return input;
 }
 
-const { MODEL_NAME, CMDH_API_KEY } = process.env;
-
-const openAIModels = ['gpt-3.5-turbo', 'gpt-4'];
-const openai = new OpenAI();
-
 const api = {
   sendMessage: async (prompt, system) => {
     const LLM_HOST = process.env.LLM_HOST;
@@ -49,28 +44,33 @@ const api = {
 };
 
 async function fetchOpenAIApi(prompt, system) {
-  const stream = await openai.chat.completions.create({
-    model: MODEL_NAME,
-    messages: [
-      { role: 'system', content: system },
-      { role: 'user', content: prompt }
-    ],
-    stream: true,
-  });
-
   try {
-    let buffer = '';
-    // Collecting data from the stream
-    for await (const chunk of stream) {
-      // Assuming chunk is a string or can be converted to string
-      const content = chunk.choices[0].delta.content
-      if (content) {
-        buffer += content;
+    const openai = new OpenAI();
+    const stream = await openai.chat.completions.create({
+      model: MODEL_NAME,
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: prompt }
+      ],
+      stream: true,
+    });
+
+    try {
+      let buffer = '';
+      // Collecting data from the stream
+      for await (const chunk of stream) {
+        // Assuming chunk is a string or can be converted to string
+        const content = chunk.choices[0].delta.content
+        if (content) {
+          buffer += content;
+        }
       }
+      return buffer;
+    } catch (e) {
+      throw e;
     }
-    return buffer;
   } catch (e) {
-    throw e;
+    console.log('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
   }
 }
 

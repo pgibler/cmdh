@@ -10,7 +10,7 @@
     "openai": "^4.24.0",
     "ora": "^6.3.0"
   },
-  "description": "cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or ChatGPT to convert a command request into a desired command.",
+  "description": "cmdh (i.e. command helper) is a program that invokes an LLM model to convert a command request into a desired command, which you can then execute.",
   "version": "0.0.1",
   "main": "index.js",
   "devDependencies": {},
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pgibler/cmdh.git"
+    "url": "git+https://github.com/pgibler/cmdm.git"
   },
   "keywords": [
     "ai",
