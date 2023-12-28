@@ -14,8 +14,15 @@ Set up and configure the project by running these commands:
 
 ```
 git clone https://github.com/pgibler/cmdh.git && cd cmdh && ./install.sh
+```
+
+Then you can run it like so:
+
+```
 cmdh "Replace the word llm with llama in documentation.md and output it to new.md"
 ```
+
+NOTE: You will have to reload your .bashrc / .zshrc / etc. or open a new terminal to enable the command.
 
 ### Distro support
 
