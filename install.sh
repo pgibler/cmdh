@@ -30,13 +30,13 @@ npm install
 tsc
 
 # Setup .env file
-node ./dist/index.mjs configure
+node ./dist/index.js configure
 
 # Get the directory where the install script is located
 CMDH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Alias command using the dynamically determined path
-alias_cmd="alias cmdh='node $CMDH_DIR/dist/index.mjs'"
+alias_cmd="alias cmdh='node $CMDH_DIR/dist/index.js'"
 
 # Function to add alias and reload config for Bash and Zsh
 add_alias_and_reload() {
@@ -56,7 +56,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     echo "Alias added to .zshrc."
 elif [ -n "$FISH_VERSION" ]; then
     # Fish shell
-    echo "set -Ux cmdh 'node $CMDH_DIR/dist/index.mjs'" | fish
+    echo "set -Ux cmdh 'node $CMDH_DIR/dist/index.js'" | fish
     echo "Alias added to Fish universal variables."
 else
     echo "Unsupported shell. Please add the alias manually to your shell initializer."
