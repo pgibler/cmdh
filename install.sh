@@ -47,7 +47,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     echo "Alias added to .zshrc. Please open a new terminal session to use 'cmdh' command."
 elif [ -n "$FISH_VERSION" ]; then
     # Fish shell
-    echo "set -Ux cmdh 'node $CMDH_DIR/src/run.mjs'" | fish
+    echo "set -Ux cmdh 'node $CMDH_DIR/index.mjs'" | fish
     echo "Alias added to Fish universal variables. Please open a new terminal session to use 'cmdh' command."
 else
     echo "Unsupported shell. Please add the alias manually to your shell initializer."
@@ -56,4 +56,4 @@ else
 fi
 
 echo "Installation complete!"
-echo "Reminder: reload your shell config file or open a new terminal session to use 'cmdh' command."
+echo "Reload your shell config file or open a new terminal session to run cmdh"
