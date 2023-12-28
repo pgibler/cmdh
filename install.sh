@@ -11,23 +11,32 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
+if ! command -v tsc &> /dev/null; then
+    echo "tsc could not be found, please install tsc (TypeScript CLI & compiler)"
+    exit 1
+fi
+
 NODE_VERSION="$(node --version)"
 NPM_VERSION="$(npm --version)"
+TSC_VERSION="$(tsc -v)"
 
 echo "Node version: $NODE_VERSION"
 echo "npm version: $NPM_VERSION"
+echo "tsc version: $TSC_VERSION"
 
 # Install npm dependencies
 npm install
 
+tsc
+
 # Setup .env file
-node ./index.mjs configure
+node ./dist/index.mjs configure
 
 # Get the directory where the install script is located
 CMDH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Alias command using the dynamically determined path
-alias_cmd="alias cmdh='node $CMDH_DIR/index.mjs'"
+alias_cmd="alias cmdh='node $CMDH_DIR/dist/index.mjs'"
 
 # Function to add alias and reload config for Bash and Zsh
 add_alias_and_reload() {
@@ -47,7 +56,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     echo "Alias added to .zshrc."
 elif [ -n "$FISH_VERSION" ]; then
     # Fish shell
-    echo "set -Ux cmdh 'node $CMDH_DIR/index.mjs'" | fish
+    echo "set -Ux cmdh 'node $CMDH_DIR/dist/index.mjs'" | fish
     echo "Alias added to Fish universal variables."
 else
     echo "Unsupported shell. Please add the alias manually to your shell initializer."

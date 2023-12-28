@@ -12,6 +12,7 @@ Now with [ollama](https://ollama.ai/) support!
 
 - NodeJS - tested on version 20.0.9
 - npm - tested on version 10.2.3
+- tsc (TypeScript compiler) - tested on version 4.5.4
 
 ## Installation
 
