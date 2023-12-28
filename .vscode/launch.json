@@ -5,8 +5,9 @@
       "type": "node",
       "request": "launch",
       "name": "Run cmdh",
-      "program": "${workspaceFolder}/index.mjs",
+      "program": "${workspaceFolder}/dist/index.js",
       "console": "integratedTerminal",
+      "preLaunchTask": "npm: build",
       "args": []
     }
   ]

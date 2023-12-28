@@ -5,16 +5,19 @@
     "chalk": "^5.2.0",
     "clipboardy": "^3.0.0",
     "dotenv": "^16.0.3",
+    "form-data": "^4.0.0",
     "inquirer": "^9.2.12",
     "inquirer-interactive-list-prompt": "^1.0.4",
     "openai": "^4.24.0",
-    "ora": "^6.3.0"
+    "ora": "^6.3.0",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2"
   },
   "description": "cmdh (i.e. command helper) is a program that invokes an LLM model to convert a command request into a desired command, which you can then execute.",
   "version": "0.0.1",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,5 +37,8 @@
   "bugs": {
     "url": "https://github.com/pgibler/cmdh/issues"
   },
-  "homepage": "https://github.com/pgibler/cmdh#readme"
+  "homepage": "https://github.com/pgibler/cmdh#readme",
+  "devDependencies": {
+    "typescript": "^5.4.0-dev.20231228"
+  }
 }

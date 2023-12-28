@@ -1,2 +1,2 @@
 #!/bin/bash
-node index.mjs "$@"
+node ./dist/index.js "$@"

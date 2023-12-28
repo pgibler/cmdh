@@ -19,3 +19,6 @@ dist/
 .DS_Store
 Thumbs.db
 *.lock
+
+# Compiled TypeScript -> JavaScript
+dist
