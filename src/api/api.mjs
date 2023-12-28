@@ -70,39 +70,47 @@ async function fetchOpenAIApi(prompt, system) {
       throw e;
     }
   } catch (e) {
-    console.log('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
+    if (e.message.includes('OPENAI_API_KEY')) {
+      console.log('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
+    } else {
+      console.log('An error occurred while communicating with the OpenAI API. Please try again later.');
+    }
   }
 }
 
 async function fetchCmdhAPI(prompt, system) {
-  const apiBaseUrl = process.env.CMDH_API_BASE; // Ensure this is a valid URL
-  const apiKey = process.env.CMDH_API_KEY; // Your API key
-  const endpoint = '/api/generate'; // API endpoint
+  try {
+    const apiBaseUrl = process.env.CMDH_API_BASE; // Ensure this is a valid URL
+    const apiKey = process.env.CMDH_API_KEY; // Your API key
+    const endpoint = '/api/generate'; // API endpoint
 
-  const url = new URL(endpoint, apiBaseUrl).toString(); // Construct the full URL
+    const url = new URL(endpoint, apiBaseUrl).toString(); // Construct the full URL
 
-  const requestBody = {
-    prompt,
-    system,
-    apiKey,
-    model: MODEL_NAME
-  };
+    const requestBody = {
+      prompt,
+      system,
+      apiKey,
+      model: MODEL_NAME
+    };
 
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: {
-      'Content-Type': 'application/json'
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  });
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
+    // Handle the stream
+    const reader = response.body;
+    const streamResponse = await readStream(reader);
+
+    return streamResponse.value;
+  } catch (e) {
+    console.log('An error occurred while communicating with the Cmdh API. Please try again later.');
   }
-
-  // Handle the stream
-  const reader = response.body;
-  const streamResponse = await readStream(reader);
-
-  return streamResponse.value;
 }

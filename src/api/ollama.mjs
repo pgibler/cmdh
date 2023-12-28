@@ -31,7 +31,6 @@ export async function ollamaResponse(prompt, system) {
 
     return responseJson.response;
   } catch (error) {
-    console.error('Error in fetch request:', error);
-    throw error;
+    console.error("Error fetching response from Ollama API: ", error);
   }
 }
