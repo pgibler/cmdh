@@ -91,7 +91,7 @@ async function fetchCmdhAPI(prompt, system) {
       prompt,
       system,
       apiKey,
-      model: MODEL_NAME
+      model: process.env.MODEL_NAME,
     };
 
     const response = await fetch(url, {
