@@ -11,8 +11,11 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
-node -v
-npm --version
+NODE_VERSION=node -v
+NPM_VERSION=npm --version
+
+echo "Node version: $NODE_VERSION"
+echo "npm version: $NPM_VERSION"
 
 # Install npm dependencies
 npm install
