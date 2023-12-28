@@ -40,15 +40,15 @@ add_alias_and_reload() {
 if [ -n "$BASH_VERSION" ]; then
     # Bash shell
     add_alias_and_reload "${HOME}/.bashrc"
-    echo "Alias added to .bashrc. Please open a new terminal session to use 'cmdh' command."
+    echo "Alias added to .bashrc."
 elif [ -n "$ZSH_VERSION" ]; then
     # Zsh shell
     add_alias_and_reload "${HOME}/.zshrc"
-    echo "Alias added to .zshrc. Please open a new terminal session to use 'cmdh' command."
+    echo "Alias added to .zshrc."
 elif [ -n "$FISH_VERSION" ]; then
     # Fish shell
     echo "set -Ux cmdh 'node $CMDH_DIR/index.mjs'" | fish
-    echo "Alias added to Fish universal variables. Please open a new terminal session to use 'cmdh' command."
+    echo "Alias added to Fish universal variables."
 else
     echo "Unsupported shell. Please add the alias manually to your shell initializer."
     echo "$alias_cmd"
