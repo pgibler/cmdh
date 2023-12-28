@@ -56,4 +56,4 @@ else
 fi
 
 echo "Installation complete!"
-echo "Reload your shell config file or open a new terminal session to run cmdh"
+echo "Reload your shell config file or open a new terminal session to run cmdh."
