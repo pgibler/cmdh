@@ -10,9 +10,9 @@ Now with [ollama](https://ollama.ai/) support!
 
 ## Prerequisites
 
-- NodeJS - tested on version 20.0.9
-- npm - tested on version 10.2.3
-- tsc (TypeScript compiler) - tested on version 4.5.4
+- NodeJS - [installation guide](https://nodejs.org/en/download/package-manager)
+- npm - [installation guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- tsc - [installation guide](https://www.npmjs.com/package/typescript)
 
 ## Installation
 
