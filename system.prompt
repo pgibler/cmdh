@@ -18,6 +18,8 @@ desired command: <the command to run>
 
 runnable in non-interactive shell: <yes or no>
 
+command safety level: <delete or overwrite or safe>
+
 assistant message: <friendly message for the user>
 ```
 
@@ -28,5 +30,10 @@ Put all package installation commands in the "setup commands" section. If there 
 Put the actual command to run in the "desired command" field.
 
 Set "runnable in non-interactive shell" to yes if the command can be run in the non-interactive shell the same as it would in the interactive shell. Set it to no if the command explicitly requires the interactive shell to run at all.
+
+Set "is safe command" to:
+- "delete" if the command deletes one or more files.
+- "overwrite" if the command overwrites a file or adds content to an existing file.
+- "safe" if the command is safe to run, meaning it does not delete or overwrite any files.
 
 In the assistant message, say whatever you would like to user. If the desired command is supposed to be run in an interactive shell, note that command may not work as expected if run in the non-interactive shell.

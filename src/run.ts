@@ -47,7 +47,7 @@ export async function run(promptArg: string) {
     const systemMessage = await getSystemMessage();
 
     const response = await startChat(input, systemMessage);
-    const { setupCommands, desiredCommand, nonInteractive, assistantMessage } = parseResponse(response);
+    const { setupCommands, desiredCommand, nonInteractive, safetyLevel, assistantMessage } = parseResponse(response);
 
     if (setupCommands.length > 0) {
       console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
@@ -55,28 +55,38 @@ export async function run(promptArg: string) {
     console.log(chalk.green('desired command:'), chalk.yellow(desiredCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
 
-    let choice = await getPromptChoice(nonInteractive, setupCommands);
-
-    switch (choice.toLowerCase()) {
-      case 'all': // run all
-        await runAllCommands(setupCommands, desiredCommand);
-        break;
-      case 'desired':
-        await runCommands([desiredCommand]);
-        break;
-      case 'emit':
-        copyCommand(desiredCommand);
-        break;
-      case 'setup':
-        await runCommands(setupCommands);
-        break;
-      case 'quit':
-        console.log('👋');
-        break;
-      default:
-        console.log('No option selected. Exiting program.')
-        break;
+    if (safetyLevel === 'overwrite') {
+      console.log(chalk.red('WARNING: This command will overwrite files on your system.'))
+    } else if (safetyLevel === 'delete') {
+      console.log(chalk.redBright('WARNING: This command will delete files on your system.'))
     }
+
+    await promptAndExecute(setupCommands, desiredCommand, nonInteractive);
+  }
+}
+
+async function promptAndExecute(setupCommands, desiredCommand, nonInteractive) {
+  let choice = await getPromptChoice(nonInteractive, setupCommands);
+
+  switch (choice.toLowerCase()) {
+    case 'all': // run all
+      await runAllCommands(setupCommands, desiredCommand);
+      break;
+    case 'desired':
+      await runCommands([desiredCommand]);
+      break;
+    case 'emit':
+      copyCommand(desiredCommand);
+      break;
+    case 'setup':
+      await runCommands(setupCommands);
+      break;
+    case 'quit':
+      console.log('👋');
+      break;
+    default:
+      console.log('No option selected. Exiting program.')
+      break;
   }
 }
 
@@ -117,26 +127,8 @@ async function getPromptChoice(nonInteractive, setupCommands): Promise<string> {
   return answer;
 }
 
-function parseResponse(response) {
-  const regex = /setup commands:\s*((?:\d+\.\s*.+?\n)*?)\ndesired command:\s*(.+)\n\nrunnable in non-interactive shell:\s*(.+)\n\nassistant message:\s*(.+)/;
-  const match = response.match(regex);
-
-  if (!match) {
-    throw new Error('Invalid response format');
-  }
-
-  const setupCommands = match[1]
-    .split('\n')
-    .filter((line) => line.trim() !== '')
-    .map((line) => line.replace(/^\d+\.\s*/, ''));
-  const desiredCommand = match[2];
-  const nonInteractive = match[3].trim().toLowerCase() === 'yes';
-  const assistantMessage = match[4];
-
-  return { setupCommands, desiredCommand, nonInteractive, assistantMessage };
-}
-
 import { spawn } from 'child_process';
+import { parseResponse } from './parseResponse.js';
 
 async function runAllCommands(setupCommands, desiredCommand) {
   await runCommands(setupCommands);
