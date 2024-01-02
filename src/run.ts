@@ -14,7 +14,7 @@ const readFile = promisify(fs.readFile);
 
 export async function run(promptArg: string) {
   async function questionAsync(message) {
-    const answers = await inquirer.prompt({
+    const answers = await inquirer.prompt<{ COMMAND_REQUEST: string }>({
       name: 'COMMAND_REQUEST',
       type: 'input',
       message,

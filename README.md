@@ -1,12 +1,20 @@
 # cmdh - Generate Linux commands using an LLM
 
-cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or ChatGPT to convert a command request into a desired command.
+cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or OpenAI to convert a command request into a desired command.
 
 It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
 
 Now with [ollama](https://ollama.ai/) support!
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
+
+## Features
+
+- Generate Linux commands from natural language
+- Interactively run the generated command
+- Hotkey menu system for efficient usage
+- Differentiates between shell command types: interactive and non-interactive
+- Use either ollama for local execution or OpenAI models to use the gpt models remotely.
 
 ## Prerequisites
 
@@ -64,17 +72,18 @@ Running: git log --since='1 month ago' --pretty=tformat: --numstat | gawk '{ add
 added lines: 63648 removed lines: 8315 total lines: 55333
 ```
 
-## Features
+## Configuring
 
-- Build Linux commands from natural language
-- Hotkey menu system for efficient usage
-- Interactively run the generated commands
-- Differentiates between shell command types: interactive and non-interactive
-- Use either ollama for local execution or OpenAI models to use the gpt models remotely.
+Run `cmdh configure` to run the configuration wizard and set the project's environment variables correctly.
 
-## LLM support
+```
+$ cmdh configure
+? Which LLM host do you want to use? (Use arrow keys)
+❯ OpenAI 
+  ollama 
+```
 
-### ChatGPT
+### OpenAI
 
 You must get an OpenAI access key to run cmdh using ChatGPT.
 
@@ -84,14 +93,16 @@ Supported models
 
 ### ollama
 
-To configure cmdh to use ollama, you must have an ollama server running locally with a model installed. You can install ollama and Mistral on Linux using the following commands:
+Ensure your ollama server is running locally with the same model installed and running in ollama that you have configured using `cmdh configure` if you would like to use ollama to process the application prompts.
+
+You can install ollama, download the Dolphin Mistral model, and run it on Linux using the following commands:
 
 ```
 curl https://ollama.ai/install.sh | sh
-ollama run mistral
+ollama run dolphin-mistral
 ```
 
-Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434` in both ollama and the .env file.
+Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434` in both ollama and the configured .env file in the cloned project folder.
 
 ## Roadmap
 
