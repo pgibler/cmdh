@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import { oraPromise } from 'ora';
 import path from 'path';
-import { generate as generateCmdh } from './cmdh.js';
-import { generate as generateOpenAI } from './openai.js';
+import { generate as generateCmdh } from './cmdh';
+import { generate as generateOpenAI } from './openai';
 import { generate as generateOllama } from './ollama';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
