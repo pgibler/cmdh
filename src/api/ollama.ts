@@ -5,7 +5,8 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const envPath = path.resolve(__dirname, '../../.env');
 dotenv.config({ path: envPath });
 
-export async function ollamaResponse(prompt, system) {
+// Generate a response from ollama
+export async function generate(prompt, system) {
   const ollamaUrl = path.join(process.env.OLLAMA_HOST, 'api/generate');
   const requestBody = JSON.stringify({
     model: process.env.MODEL_NAME,

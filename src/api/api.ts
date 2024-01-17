@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import { oraPromise } from 'ora';
 import path from 'path';
-import { ollamaResponse } from './ollama.js';
-import { readStream } from './stream.js';
-import OpenAI from 'openai';
+import { generate as generateCmdh } from './cmdh.js';
+import { generate as generateOpenAI } from './openai.js';
+import { generate as generateOllama } from './ollama';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const envPath = path.resolve(__dirname, '../../.env');
@@ -34,84 +34,11 @@ const api = {
   sendMessage: async (prompt, system) => {
     const LLM_HOST = process.env.LLM_HOST;
     if (LLM_HOST === 'cmdh') {
-      return await fetchCmdhAPI(prompt, system);
+      return await generateCmdh(prompt, system);
     } else if (LLM_HOST === 'OpenAI') {
-      return await fetchOpenAIApi(prompt, system);
+      return await generateOpenAI(prompt, system);
     } else if (LLM_HOST === 'ollama') {
-      return await ollamaResponse(prompt, system);
+      return await generateOllama(prompt, system);
     }
   }
 };
-
-async function fetchOpenAIApi(prompt, system) {
-  try {
-    const openai = new OpenAI();
-
-    const stream = await openai.chat.completions.create({
-      model: process.env.MODEL_NAME,
-      messages: [
-        { role: 'system', content: system },
-        { role: 'user', content: prompt }
-      ],
-      stream: true,
-    });
-
-    try {
-      let buffer = '';
-      // Collecting data from the stream
-      for await (const chunk of stream) {
-        // Assuming chunk is a string or can be converted to string
-        const content = chunk.choices[0].delta.content
-        if (content) {
-          buffer += content;
-        }
-      }
-      return buffer;
-    } catch (e) {
-      console.log("Failed to read stream: ", e);
-    }
-  } catch (e) {
-    if (e.message.includes('OPENAI_API_KEY')) {
-      console.log('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
-    } else {
-      console.log('An error occurred while communicating with the OpenAI API. Please try again later.');
-    }
-  }
-}
-
-async function fetchCmdhAPI(prompt, system) {
-  try {
-    const apiBaseUrl = process.env.CMDH_API_BASE; // Ensure this is a valid URL
-    const apiKey = process.env.CMDH_API_KEY; // Your API key
-    const endpoint = '/api/generate'; // API endpoint
-
-    const url = new URL(endpoint, apiBaseUrl).toString(); // Construct the full URL
-
-    const requestBody = {
-      prompt,
-      system,
-      apiKey,
-      model: process.env.MODEL_NAME,
-    };
-
-    const response = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    // Handle the stream
-    const reader = response.body;
-    const streamResponse = await readStream(reader);
-
-    return streamResponse.value;
-  } catch (e) {
-    console.log('An error occurred while communicating with the Cmdh API. Please try again later.');
-  }
-}
