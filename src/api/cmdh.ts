@@ -1,4 +1,4 @@
-import { readStream } from "./stream";
+import { readStream } from "./stream.js";
 
 export async function generate(prompt, system) {
   try {
