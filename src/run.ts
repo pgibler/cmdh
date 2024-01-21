@@ -53,9 +53,9 @@ export async function run(promptArgs: string[]) {
 
       const configurationModeSelection = configurationMode.CONFIGURATION_MODE;
       if (configurationModeSelection === 'Modify') {
-        await configure('configure')
+        await configure('')
       } else if (configurationModeSelection === 'Show') {
-        await configure('configure show')
+        await configure('show')
       }
     }
 
