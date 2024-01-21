@@ -12,38 +12,63 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const readFile = promisify(fs.readFile);
 
-export async function run(promptArg: string) {
-  async function questionAsync(message) {
-    const answers = await inquirer.prompt<{ COMMAND_REQUEST: string }>({
-      name: 'COMMAND_REQUEST',
-      type: 'input',
-      message,
-      default: 'Output current working directory',
-    });
-
-    return answers.COMMAND_REQUEST;
-  }
-
-  async function getSystemMessage() {
-    const systemMessageTemplate = await readFile(path.resolve(__dirname, '../system.prompt'), 'utf-8');
-    const systemInfo = await getSystemInfo();
-    const { distro, arch } = systemInfo;
-    return systemMessageTemplate.replace('{distro}', distro).replace('{arch}', arch);
-  }
-
-  if (promptArg) {
-    if (promptArg.trim() === 'configure') {
-      await configure();
+export async function run(promptArgs: string[]) {
+  if (promptArgs.length > 0) {
+    if (promptArgs[0] === 'configure') {
+      await configure(promptArgs[1]);
       return;
     } else {
-      await handlePrompt(promptArg);
+      await handlePrompt(promptArgs[0]);
     }
   } else {
-    const input = await questionAsync('Enter your command request prompt: ');
-    await handlePrompt(input);
+    const executionMode = await inquirer.prompt<{ EXECUTION_MODE: string }>({
+      name: 'EXECUTION_MODE',
+      type: 'list',
+      message: 'Select ',
+      choices: ['Input a prompt', 'Manage configuration'],
+    });
+
+    const executionModeSelection = executionMode.EXECUTION_MODE;
+
+    if (executionModeSelection === 'Input a prompt') {
+      async function questionAsync(message) {
+        const answers = await inquirer.prompt<{ COMMAND_REQUEST: string }>({
+          name: 'COMMAND_REQUEST',
+          type: 'input',
+          message,
+          default: 'Output current working directory',
+        });
+
+        return answers.COMMAND_REQUEST;
+      }
+      const input = await questionAsync('Enter a prompt to request a command: ');
+      await handlePrompt(input);
+    } else if (executionModeSelection === 'Manage configuration') {
+      const configurationMode = await inquirer.prompt<{ CONFIGURATION_MODE: string }>({
+        name: 'CONFIGURATION_MODE',
+        type: 'list',
+        message: 'Select ',
+        choices: ['Modify', 'Show'],
+      });
+
+      const configurationModeSelection = configurationMode.CONFIGURATION_MODE;
+      if (configurationModeSelection === 'Modify') {
+        await configure('configure')
+      } else if (configurationModeSelection === 'Show') {
+        await configure('configure show')
+      }
+    }
+
   }
 
   async function handlePrompt(input) {
+    async function getSystemMessage() {
+      const systemMessageTemplate = await readFile(path.resolve(__dirname, '../system.prompt'), 'utf-8');
+      const systemInfo = await getSystemInfo();
+      const { distro, arch } = systemInfo;
+      return systemMessageTemplate.replace('{distro}', distro).replace('{arch}', arch);
+    }
+
     const systemMessage = await getSystemMessage();
 
     const response = await startChat(input, systemMessage);
