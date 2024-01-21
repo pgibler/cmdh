@@ -83,6 +83,8 @@ $ cmdh configure
   ollama 
 ```
 
+Run `cmdh configure show` to display your current configuration.
+
 ### OpenAI
 
 You must get an OpenAI access key to run cmdh using ChatGPT.
