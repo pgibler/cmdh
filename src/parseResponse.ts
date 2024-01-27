@@ -8,7 +8,8 @@ type CommandRequestResponse = {
 
 export function parseResponse(responseData: string): CommandRequestResponse | null {
   try {
-    const data = JSON.parse(responseData);
+    const escapedResponse = responseData.replace(/\\n/g, "\n");
+    const data = JSON.parse(escapedResponse);
 
     if (!Array.isArray(data.setupCommands) || typeof data.desiredCommand !== 'string' ||
       (data.nonInteractive !== 'yes' && data.nonInteractive !== 'no') ||
