@@ -9,7 +9,8 @@ export const readStream = async stream => {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
-      innerBuffer += chunkValue;
+      const chunk = JSON.parse(chunkValue);
+      innerBuffer += chunk.choices[0].delta.content;
     }
   } catch (e) {
     console.error(e);

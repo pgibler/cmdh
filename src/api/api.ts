@@ -4,6 +4,7 @@ import path from 'path';
 import { generate as generateCmdh } from './cmdh.js';
 import { generate as generateOpenAI } from './openai.js';
 import { generate as generateOllama } from './ollama.js';
+import { generate as generateTextGenerationWebUI } from './text_generation_web_ui.js';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const envPath = path.resolve(__dirname, '../../.env');
@@ -39,6 +40,8 @@ const api = {
       return await generateOpenAI(prompt, system);
     } else if (LLM_HOST === 'ollama') {
       return await generateOllama(prompt, system);
+    } else if (LLM_HOST === 'text-generation-webui') {
+      return await generateTextGenerationWebUI(prompt, system);
     }
   }
 };

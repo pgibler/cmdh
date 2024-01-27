@@ -48,13 +48,15 @@ async function modify() {
     OLLAMA_HOST: process.env.OLLAMA_HOST || 'http://localhost:11434',
     CMDH_API_KEY: process.env.CMDH_API_KEY || '',
     CMDH_API_BASE: process.env.CMDH_API_BASE || 'https://cmdh.ai/',
+    TEXT_GENERATION_WEBUI_HOST: process.env.TEXT_GENERATION_WEBUI_HOST || 'http://127.0.0.1',
+    TEXT_GENERATION_WEBUI_PORT: process.env.TEXT_GENERATION_WEBUI_PORT || '5000'
   };
 
   const llmHostPrompt = await inquirer.prompt({
     name: 'LLM_HOST',
     type: 'list',
     message: 'Which LLM host do you want to use?',
-    choices: ['OpenAI', 'ollama'],
+    choices: ['OpenAI', 'ollama', 'text-generation-webui'],
   });
 
   const llmHost = llmHostPrompt.LLM_HOST;
@@ -100,6 +102,18 @@ async function modify() {
         message: 'Enter your cmdh API key:',
         default: currentConfig.CMDH_API_KEY,
       }];
+    } else if (llmHost === 'text-generation-webui') {
+      return [{
+        name: 'TEXT_GENERATION_WEBUI_HOST',
+        type: 'input',
+        message: 'Enter the text-generation-webui URL:',
+        default: currentConfig.TEXT_GENERATION_WEBUI_HOST,
+      }, {
+        name: 'TEXT_GENERATION_WEBUI_PORT',
+        type: 'input',
+        message: 'Enter the text-generation-webui port:',
+        default: currentConfig.TEXT_GENERATION_WEBUI_PORT,
+      }];
     }
   }
 
@@ -116,6 +130,8 @@ async function modify() {
     `OLLAMA_HOST=${combined.OLLAMA_HOST}`,
     `CMDH_API_KEY=${combined.CMDH_API_KEY}`,
     `CMDH_API_BASE=${combined.CMDH_API_BASE}`,
+    `TEXT_GENERATION_WEBUI_HOST=${combined.TEXT_GENERATION_WEBUI_HOST}`,
+    `TEXT_GENERATION_WEBUI_PORT=${combined.TEXT_GENERATION_WEBUI_PORT}`,
     `LLM_HOST=${llmHost}`
   ].join('\n')
 

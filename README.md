@@ -4,7 +4,7 @@ cmdh (short for Command Helper) is a tool that invokes LLM models provided by ol
 
 It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
 
-Now with [ollama](https://ollama.ai/) support!
+Now with [ollama](https://ollama.ai/) & [text-generation-webui](https://github.com/oobabooga/text-generation-webui) support!
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
@@ -105,6 +105,19 @@ ollama run dolphin-mistral
 ```
 
 Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434` in both ollama and the configured .env file in the cloned project folder.
+
+### text-generation-webui
+
+To use cmdh with text-generation-webui, do the following:
+
+1. Clone the repo: `git clone https://github.com/oobabooga/text-generation-webui`
+2. Run `cmdh configure` and choose the 'text-generation-webui' option
+3. Navigate to the cloned text-generation-webui folder and start the server by running `./start_linux --api --listen`
+4. Run cmdh.
+
+cmdh will automatically use whichever model is loaded by text-generation-webui.
+
+Recommended model: [https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2](https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2)
 
 ## Roadmap
 
