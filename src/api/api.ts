@@ -1,25 +1,26 @@
-import dotenv from 'dotenv';
 import { oraPromise } from 'ora';
-import path from 'path';
 import { generate as generateCmdh } from './cmdh.js';
 import { generate as generateOpenAI } from './openai.js';
 import { generate as generateOllama } from './ollama.js';
 import { generate as generateTextGenerationWebUI } from './text_generation_web_ui.js';
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(__dirname, '../../.env');
-
-dotenv.config({ path: envPath });
+const generateFunctionMap = {
+  'cmdh': generateCmdh,
+  'OpenAI': generateOpenAI,
+  'ollama': generateOllama,
+  'text-generation-webui': generateTextGenerationWebUI
+}
 
 export async function startChat(prompt, system, showOra = true) {
+  const generateFunction = generateFunctionMap[process.env.LLM_HOST]
   if (showOra) {
-    const promise = api.sendMessage(prompt, system);
+    const promise = generateFunction(prompt, system);
 
     return oraPromise(promise, {
       text: truncate(`Retrieving command... ${prompt}`, 75)
     })
   } else {
-    return await api.sendMessage(prompt, system);
+    return await generateFunction(prompt, system);
   }
 }
 
@@ -30,18 +31,3 @@ function truncate(input, length) {
   }
   return input;
 }
-
-const api = {
-  sendMessage: async (prompt, system) => {
-    const LLM_HOST = process.env.LLM_HOST;
-    if (LLM_HOST === 'cmdh') {
-      return await generateCmdh(prompt, system);
-    } else if (LLM_HOST === 'OpenAI') {
-      return await generateOpenAI(prompt, system);
-    } else if (LLM_HOST === 'ollama') {
-      return await generateOllama(prompt, system);
-    } else if (LLM_HOST === 'text-generation-webui') {
-      return await generateTextGenerationWebUI(prompt, system);
-    }
-  }
-};

@@ -1,12 +1,5 @@
 import fs from 'fs'
 import inquirer from 'inquirer';
-import path from 'path';
-import dotenv from 'dotenv';
-
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(__dirname, '../.env');
-
-dotenv.config({ path: envPath });
 
 export default async function configure(promptArg: string) {
   if (promptArg === 'show') {

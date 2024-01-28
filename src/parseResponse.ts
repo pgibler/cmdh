@@ -11,7 +11,7 @@ export function parseResponse(responseData: string): CommandRequestResponse | nu
     const escapedResponse = responseData.replace(/\\n/g, "\n");
     const data = JSON.parse(escapedResponse);
 
-    if (!Array.isArray(data.setupCommands) || typeof data.desiredCommand !== 'string' ||
+    if (typeof data.desiredCommand !== 'string' ||
       (data.nonInteractive !== 'yes' && data.nonInteractive !== 'no') ||
       (data.safetyLevel !== 'delete' && data.safetyLevel !== 'overwrite' && data.safetyLevel !== 'safe') ||
       typeof data.assistantMessage !== 'string') {
@@ -20,7 +20,7 @@ export function parseResponse(responseData: string): CommandRequestResponse | nu
     }
 
     return {
-      setupCommands: data.setupCommands,
+      setupCommands: data.setupCommands ?? [],
       desiredCommand: data.desiredCommand,
       nonInteractive: data.nonInteractive,
       safetyLevel: data.safetyLevel,

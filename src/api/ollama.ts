@@ -1,9 +1,4 @@
-import dotenv from 'dotenv';
 import path from 'path';
-
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const envPath = path.resolve(__dirname, '../../.env');
-dotenv.config({ path: envPath });
 
 // Generate a response from ollama
 export async function generate(prompt, system) {

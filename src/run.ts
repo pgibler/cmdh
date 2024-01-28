@@ -8,8 +8,6 @@ import prompt from 'inquirer-interactive-list-prompt';
 import inquirer from 'inquirer';
 import configure from './configure.js'
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-
 const readFile = promisify(fs.readFile);
 
 export async function run(promptArgs: string[]) {
@@ -36,7 +34,7 @@ export async function run(promptArgs: string[]) {
           name: 'COMMAND_REQUEST',
           type: 'input',
           message,
-          default: 'Output current working directory',
+          default: 'Output available hard drive space',
         });
 
         return answers.COMMAND_REQUEST;
@@ -58,12 +56,12 @@ export async function run(promptArgs: string[]) {
         await configure('show')
       }
     }
-
   }
 
   async function handlePrompt(input) {
     async function getSystemMessage() {
-      const systemMessageTemplate = await readFile(path.resolve(__dirname, '../system.prompt'), 'utf-8');
+      const dirname = path.dirname(new URL(import.meta.url).pathname)
+      const systemMessageTemplate = await readFile(path.resolve(dirname, '../system.prompt'), 'utf-8');
       const systemInfo = await getSystemInfo();
       const { distro, arch } = systemInfo;
       return systemMessageTemplate.replace('{distro}', distro).replace('{arch}', arch);
