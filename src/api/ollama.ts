@@ -1,32 +1,28 @@
-import path from 'path';
+import { Ollama } from 'ollama';
 
 // Generate a response from ollama
 export async function generate(prompt, system) {
-  const ollamaUrl = path.join(process.env.OLLAMA_HOST, 'api/generate');
-  const requestBody = JSON.stringify({
-    model: process.env.MODEL_NAME,
-    prompt: prompt,
-    system: system,
-    stream: false,
+  const { OLLAMA_HOST } = process.env;
+
+  const ollama = new Ollama({ host: OLLAMA_HOST })
+
+  const response = await ollama.chat({
+    model: 'llama2',
+    messages: [{
+      'role': 'system',
+      'content': system,
+    }, {
+      'role': 'user',
+      'content': prompt
+    }],
+    stream: true,
   });
 
-  try {
-    const response = await fetch(ollamaUrl, {
-      method: 'POST',
-      body: requestBody,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
+  let buffer = '';
+  for await (const part of response) {
+    if (part.message) {
+      buffer += part.message.content
     }
-
-    const responseJson = await response.json();
-
-    return responseJson.response;
-  } catch (error) {
-    console.error("Error fetching response from Ollama API: ", error);
   }
+  return buffer;
 }

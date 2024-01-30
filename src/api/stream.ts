@@ -1,4 +1,6 @@
-export const readStream = async stream => {
+export const readStream = async (
+  stream: ReadableStream<Uint8Array>,
+  onStream: (value: string) => string) => {
   const reader = stream.getReader();
   const decoder = new TextDecoder();
   let done = false;
@@ -8,9 +10,8 @@ export const readStream = async stream => {
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      const chunkValue = decoder.decode(value);
-      const chunk = JSON.parse(chunkValue);
-      innerBuffer += chunk.choices[0].delta.content;
+      const decodedValue = decoder.decode(value);
+      innerBuffer += onStream(decodedValue);
     }
   } catch (e) {
     console.error(e);

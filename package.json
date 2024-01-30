@@ -8,6 +8,7 @@
     "form-data": "^4.0.0",
     "inquirer": "^9.2.12",
     "inquirer-interactive-list-prompt": "^1.0.4",
+    "ollama": "^0.4.4",
     "openai": "^4.24.0",
     "ora": "^6.3.0",
     "ts-loader": "^9.5.1"

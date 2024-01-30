@@ -2,16 +2,15 @@ import { readStream } from "./stream.js";
 
 export async function generate(prompt, system) {
   try {
-    const apiBaseUrl = process.env.CMDH_API_BASE; // Ensure this is a valid URL
-    const apiKey = process.env.CMDH_API_KEY; // Your API key
+    const { CMDH_API_BASE, CMDH_API_KEY } = process.env;
     const endpoint = '/api/generate'; // API endpoint
 
-    const url = new URL(endpoint, apiBaseUrl).toString(); // Construct the full URL
+    const url = new URL(endpoint, CMDH_API_BASE).toString(); // Construct the full URL
 
     const requestBody = {
       prompt,
       system,
-      apiKey,
+      apiKey: CMDH_API_KEY,
       model: process.env.MODEL_NAME,
     };
 
@@ -29,10 +28,28 @@ export async function generate(prompt, system) {
 
     // Handle the stream
     const reader = response.body;
-    const streamResponse = await readStream(reader);
+    const streamResponse = await readStream(
+      reader,
+      value => value
+    );
 
-    return streamResponse.value;
+    const objects = parseSequentialJSON(streamResponse.value);
+    return objects.map(object => object.message.content).join("")
   } catch (e) {
     console.log('An error occurred while communicating with the Cmdh API. Please try again later.');
+  }
+}
+
+function parseSequentialJSON(jsonString) {
+  // Add a comma between the }{ to transform it into a valid JSON array
+  const validJsonString = `[${jsonString.replace(/}\s*{/g, '},{')}]`;
+
+  try {
+    // Parse the valid JSON string
+    const jsonArray = JSON.parse(validJsonString);
+    return jsonArray;
+  } catch (error) {
+    console.error("Parsing error:", error);
+    return null;
   }
 }
