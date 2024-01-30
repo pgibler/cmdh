@@ -56,7 +56,7 @@ ollama pull dolphin-mistral
 ```
 2. Run `cmdh configure`, select the ollama option, and set 'dolphin-mistral' as the model.
 
-The default ollama service URL is `http://localhost:11434`. When you run `cmdh configure` and select ollama, you will see this value is configurable, but you can leave it as-is if you do not change the ollama host URL.
+The default ollama service URL is `http://localhost:11434`. When you run `cmdh configure` and select ollama, you will see this value is configurable, but you can leave it as-is if you installed the ollama service and have not modified this setting on it.
 
 ### text-generation-webui
 
