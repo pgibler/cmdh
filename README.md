@@ -2,9 +2,7 @@
 
 cmdh (short for Command Helper) is a tool that invokes LLM models provided by ollama or OpenAI to convert a command request into a desired command.
 
-It can work on commands ranging from simple ones where you may not know the command, all the way up to complex commands with chaining.
-
-Now with [ollama](https://ollama.ai/) & [text-generation-webui](https://github.com/oobabooga/text-generation-webui) support!
+Use it to look up commands and flags that that you don't know offhand or generate complex commands with chaining.
 
 [cmdh_demonstration_video.webm](https://user-images.githubusercontent.com/119892/233747166-552339ef-f3fe-4eb5-9161-db574b6f96fc.webm)
 
@@ -14,7 +12,7 @@ Now with [ollama](https://ollama.ai/) & [text-generation-webui](https://github.c
 - Interactively run the generated command
 - Hotkey menu system for efficient usage
 - Differentiates between shell command types: interactive and non-interactive
-- Use either ollama for local execution or OpenAI models to use the gpt models remotely.
+- Supports [ChatGPT](https://platform.openai.com/docs/overview), [ollama](https://ollama.ai/), and [text-generation-webui](https://github.com/oobabooga/text-generation-webui)
 
 ## Prerequisites
 
@@ -24,100 +22,50 @@ Now with [ollama](https://ollama.ai/) & [text-generation-webui](https://github.c
 
 ## Installation
 
-Set up and configure the project by running these commands:
-
+1. Set up and configure cmdh using the following command:
 ```
 git clone https://github.com/pgibler/cmdh.git && cd cmdh && ./install.sh
 ```
-
-Then you can run it like so:
-
+2. Run it like so:
 ```
-cmdh "Replace the word llm with llama in documentation.md and output it to new.md"
+cmdh 'Output the number of lines of code committed to git last month'
 ```
+3. Interact with the result interface to run the setup commands, desired command, all of the commands, or quit.
 
-NOTE: You will have to reload your .bashrc / .zshrc / etc. or open a new terminal to enable the command.
-
-### Distro support
-
-Current supports Debian, Arch, and RHEL based systems for install.
-
-If you have another system, you will need to install the packages manually. Check out `install.sh` in the cmdh folder for the logic on how to install it on other systems and adapt it to your own, or better yet, open a PR.
-
-## Usage
-
-To use it, you simply type something like:
-
-`cmdh 'Output the number of lines of code committed to git last month'`
-
-The output will look something like this:
-
-```
-✔ Retrieving command... Output the number of lines of code committed to git l...
-setup commands: [ sudo apt-get update, sudo apt-get install git ]
-desire command: git diff --stat `git rev-list -n 1 --before="1 month ago" master`
-assistant message: This command will show you the number of lines of code that were committed to git last month. Please make sure you are in the correct directory where your git repository is located before running this command.
-? Choose an option:
-    Run all commands (a)
-    Run setup commands (s)
->   Run desire command (d)
-    Quit (q)
-```
-
-Then if you run the desire command, you'll see something like this:
-
-```
-? Choose an option: Run desire command (d)
-Running: git log --since='1 month ago' --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines: %s total lines: %s\n",add,subs,loc }'
-added lines: 63648 removed lines: 8315 total lines: 55333
-```
+**NOTE**: You will have to reload your .bashrc / .zshrc / etc. or open a new terminal to enable the command.
 
 ## Configuring
 
-Run `cmdh configure` to run the configuration wizard and set the project's environment variables correctly.
-
-```
-$ cmdh configure
-? Which LLM host do you want to use? (Use arrow keys)
-❯ OpenAI 
-  ollama 
-```
-
-Run `cmdh configure show` to display your current configuration.
+- Run `cmdh configure` to start the configuration wizard. You will be asked to select an LLM host and input settings required by that host.
+- Run `cmdh configure show` to display your current configuration.
 
 ### OpenAI
 
-You must get an OpenAI access key to run cmdh using ChatGPT.
-
-Supported models
-- `gpt-3.5-turbo`
-- `gpt-4`
+1. Generate an OpenAI key [here](https://platform.openai.com/api-keys).
+2. Run `cmdh configure` and select the OpenAI option.
 
 ### ollama
 
-Ensure your ollama server is running locally with the same model installed and running in ollama that you have configured using `cmdh configure` if you would like to use ollama to process the application prompts.
-
-You can install ollama, download the Dolphin Mistral model, and run it on Linux using the following commands:
-
+1. Install & run the ollama service & pull the dolphin-mistral model using the following commands:
 ```
 curl https://ollama.ai/install.sh | sh
-ollama run dolphin-mistral
+ollama pull dolphin-mistral
 ```
+2. Run `cmdh configure`, select the ollama option, and set 'dolphin-mistral' as the model.
 
-Once the server is running, make sure the base URL of the ollama server matches what you have configured. By default, the URL is `http://localhost:11434` in both ollama and the configured .env file in the cloned project folder.
+The default ollama service URL is `http://localhost:11434`. When you run `cmdh configure` and select ollama, you will see this value is configurable, but you can leave it as-is if you do not change the ollama host URL.
 
 ### text-generation-webui
 
-To use cmdh with text-generation-webui, do the following:
-
 1. Clone the repo: `git clone https://github.com/oobabooga/text-generation-webui`
-2. Run `cmdh configure` and choose the 'text-generation-webui' option
-3. Navigate to the cloned text-generation-webui folder and start the server by running `./start_linux --api --listen`
-4. Run cmdh.
+2. Navigate to the cloned text-generation-webui folder and start the server by running `./start_linux --api --listen`.
+3. Open the web UI for text-generation-webui (http://localhost:7860), open the "Model" tab, and in the "Download model or LoRA" form, input `Trelis/Llama-2-7b-chat-hf-function-calling-v2` and press "Download".
+4. Select `llama-2-7b-function-calling.Q3_K_M.gguf` from the Model dropdown menu under the Model tab and click "Load".
+2. Run `cmdh configure` and choose the 'text-generation-webui' option.
 
 cmdh will automatically use whichever model is loaded by text-generation-webui.
 
-Recommended model: [https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2](https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2)
+HuggingFace model URL: [https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2](https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2)
 
 ## Roadmap
 
