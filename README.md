@@ -63,7 +63,7 @@ The default ollama service URL is `http://localhost:11434`. When you run `cmdh c
 1. Clone the repo: `git clone https://github.com/oobabooga/text-generation-webui`
 2. Navigate to the cloned text-generation-webui folder and start the server by running `./start_linux --api --listen`.
 3. Open the web UI for text-generation-webui (http://localhost:7860), open the "Model" tab, and in the "Download model or LoRA" form, input `Trelis/Llama-2-7b-chat-hf-function-calling-v2` and press "Download".
-4. Select `llama-2-7b-function-calling.Q3_K_M.gguf` from the Model dropdown menu under the Model tab and click "Load".
+4. Click the reload button next to the Model dropdown menu under the model tab & select `llama-2-7b-function-calling.Q3_K_M.gguf`. Then click "Load" to load the model.
 2. Run `cmdh configure` and choose the 'text-generation-webui' option.
 
 cmdh will automatically use whichever model is loaded by text-generation-webui.
