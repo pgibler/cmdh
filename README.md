@@ -32,7 +32,7 @@ cmdh 'Output the number of lines of code committed to git last month'
 ```
 3. Interact with the result interface to run the setup commands, desired command, all of the commands, or quit.
 
-**NOTE**: You will have to reload your .bashrc / .zshrc / etc. or open a new terminal to make the cmdh command available in the shell. In Debian / Ubuntu, this is done using `source ~/.bashrc`.
+**NOTE**: You will have to reload your .bashrc / .zshrc / etc. or open a new terminal to make the cmdh command available in the shell. In Debian / Ubuntu, this is done by running `source ~/.bashrc`.
 
 ## Configuring
 
