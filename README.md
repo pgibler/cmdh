@@ -9,8 +9,7 @@ Use it to look up commands and flags that that you don't know offhand or generat
 ## Features
 
 - Generate Linux commands from natural language
-- Interactively run the generated command
-- Hotkey menu system for efficient usage
+- Interactively run the generated commands using a hotkey menu system for efficient usage
 - Differentiates between shell command types: interactive and non-interactive
 - Supports [ChatGPT](https://platform.openai.com/docs/overview), [ollama](https://ollama.ai/), and [text-generation-webui](https://github.com/oobabooga/text-generation-webui)
 
