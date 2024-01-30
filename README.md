@@ -66,7 +66,7 @@ The default ollama service URL is `http://localhost:11434`. When you run `cmdh c
 4. Click the reload button next to the Model dropdown menu under the model tab & select `llama-2-7b-function-calling.Q3_K_M.gguf`. Then click "Load" to load the model.
 2. Run `cmdh configure` and choose the 'text-generation-webui' option.
 
-cmdh will automatically use whichever model is loaded by text-generation-webui.
+cmdh will automatically send the prompts to whichever model is loaded by text-generation-webui.
 
 HuggingFace model URL: [https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2](https://huggingface.co/Trelis/Llama-2-7b-chat-hf-function-calling-v2)
 
