@@ -18,7 +18,7 @@ Set "nonInteractive" to yes if the command can be run in the non-interactive she
 Set "safetyLevel" field to:
 - "delete" if the command deletes one or more files.
 - "overwrite" if the command overwrites a file or adds content to an existing file.
-- "safe" if the command is safe to run, meaning it does not delete or overwrite any files.
+- "safe" if the command does not delete, modify, or overwrite any files or configurations.
 
 Set the "assistantMessage" field to a message explaining the functionality of the Linux command that you set in the "desiredCommand" field.
 
