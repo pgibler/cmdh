@@ -36,6 +36,8 @@ cmdh 'Output the number of lines of code committed to git last month'
 
 ## Configuring
 
+Before running cmdh, you will need to configure an LLM host and set configuration options required of that host.
+
 - Run `cmdh configure` to start the configuration wizard. You will be asked to select an LLM host and input settings required by that host.
 - Run `cmdh configure show` to display your current configuration.
 
@@ -43,6 +45,7 @@ cmdh 'Output the number of lines of code committed to git last month'
 
 1. Generate an OpenAI key [here](https://platform.openai.com/api-keys).
 2. Run `cmdh configure` and select the OpenAI option.
+3. Select a model & input your OpenAI key.
 
 ### ollama
 
