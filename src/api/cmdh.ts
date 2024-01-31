@@ -33,8 +33,7 @@ export async function generate(prompt, system) {
       value => value
     );
 
-    const objects = parseSequentialJSON(streamResponse.value);
-    return objects.map(object => object.message.content).join("")
+    return streamResponse.value
   } catch (e) {
     console.log('An error occurred while communicating with the Cmdh API. Please try again later.');
   }
