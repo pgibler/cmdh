@@ -18,7 +18,7 @@ fi
 
 NODE_VERSION="$(node --version)"
 NPM_VERSION="$(npm --version)"
-TSC_VERSION="$(tsc -v)"
+TSC_VERSION="$(npx tsc -v)"
 
 echo "Node version: $NODE_VERSION"
 echo "npm version: $NPM_VERSION"
