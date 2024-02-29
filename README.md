@@ -55,8 +55,6 @@ ollama pull codellama
 ```
 2. Run `cmdh configure`, select the ollama option, and set 'codellama' as the model.
 
-The default ollama service URL is `http://localhost:11434`. When you run `cmdh configure` and select ollama, you will see this value is configurable, but you can leave it as-is if you installed the ollama service and have not modified this setting on it.
-
 ### text-generation-webui
 
 1. Clone the repo: `git clone https://github.com/oobabooga/text-generation-webui`
