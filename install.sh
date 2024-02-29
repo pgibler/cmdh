@@ -27,7 +27,7 @@ echo "tsc version: $TSC_VERSION"
 # Install npm dependencies
 npm install
 
-tsc
+npx tsc
 
 # Setup .env file
 node ./dist/index.js configure
