@@ -11,7 +11,7 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
-if ! command -v tsc &> /dev/null; then
+if ! command -v npx tsc &> /dev/null; then
     echo "tsc could not be found, please install tsc (TypeScript CLI & compiler)"
     exit 1
 fi
