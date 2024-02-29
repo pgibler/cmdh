@@ -12,7 +12,10 @@ export default async function configure(promptArg: string) {
 async function showConfiguration() {
   const config = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-    MODEL_NAME: process.env.MODEL_NAME,
+    OPENAI_MODEL_NAME: process.env.OPENAI_MODEL_NAME,
+    OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME,
+    CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME,
+    TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME,
     OLLAMA_HOST: process.env.OLLAMA_HOST,
     CMDH_API_KEY: process.env.CMDH_API_KEY,
     CMDH_API_BASE: process.env.CMDH_API_BASE,
@@ -20,24 +23,39 @@ async function showConfiguration() {
   };
 
   console.log(`LLM Host: ${config.LLM_HOST}`);
-  console.log(`Model: ${config.MODEL_NAME}`);
 
-  if ('OpenAI' === config.LLM_HOST) {
-    console.log(`API key: ${config.OPENAI_API_KEY}`);
-  }
-  if ('ollama' === config.LLM_HOST) {
-    console.log(`ollama host URL: ${config.OLLAMA_HOST}`);
-  }
-  if ('cmdh' === config.LLM_HOST) {
-    console.log(`API key: ${config.CMDH_API_KEY}`);
-    console.log(`API base URL: ${config.CMDH_API_BASE}`);
+  // Use a switch or if-else block to display the model name based on LLM_HOST
+  switch (config.LLM_HOST) {
+    case 'OpenAI':
+      console.log(`Model: ${config.OPENAI_MODEL_NAME}`);
+      console.log(`API key: ${config.OPENAI_API_KEY}`);
+      break;
+    case 'ollama':
+      console.log(`Model: ${config.OLLAMA_MODEL_NAME}`);
+      console.log(`ollama host URL: ${config.OLLAMA_HOST}`);
+      break;
+    case 'cmdh':
+      console.log(`Model: ${config.CMDH_MODEL_NAME}`);
+      console.log(`API key: ${config.CMDH_API_KEY}`);
+      console.log(`API base URL: ${config.CMDH_API_BASE}`);
+      break;
+    case 'text-generation-webui':
+      console.log(`Model: ${config.TEXT_GENERATION_WEBUI_MODEL_NAME}`);
+      // Additional configuration for text-generation-webui can be displayed here
+      break;
+    default:
+      console.log('Unknown LLM Host.');
   }
 }
 
 async function modify() {
+  // Update currentConfig to remove MODEL_NAME and include distinct model names for each host
   const currentConfig = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
-    MODEL_NAME: process.env.MODEL_NAME || 'gpt-4',
+    OPENAI_MODEL_NAME: process.env.OPENAI_MODEL_NAME || 'gpt-4', // Default for OpenAI
+    OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME || 'custom-model', // Assuming a default
+    CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME || 'custom-model', // Assuming a default
+    TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME || 'custom-model', // Assuming a default
     OLLAMA_HOST: process.env.OLLAMA_HOST || 'http://localhost:11434',
     CMDH_API_KEY: process.env.CMDH_API_KEY || '',
     CMDH_API_BASE: process.env.CMDH_API_BASE || 'https://cmdh.ai/',
@@ -49,12 +67,15 @@ async function modify() {
     name: 'LLM_HOST',
     type: 'list',
     message: 'Which LLM host do you want to use?',
-    choices: ['OpenAI', 'ollama', 'text-generation-webui'],
+    choices: ['OpenAI', 'ollama', 'text-generation-webui'], // Ensure all options are included
   });
 
   const llmHost = llmHostPrompt.LLM_HOST;
 
   async function getQuestions() {
+    // Determine the default model name based on the selected LLM host
+    const defaultModelName = currentConfig[`${llmHost.toUpperCase()}_MODEL_NAME`] || 'custom-model';
+
     if (llmHost === 'OpenAI') {
       console.log("Configure the OpenAI API key and model to use.")
       return [{
@@ -63,19 +84,19 @@ async function modify() {
         message: 'Enter your OpenAI API Key:',
         default: currentConfig.OPENAI_API_KEY,
       }, {
-        name: 'MODEL_NAME',
+        name: 'OPENAI_MODEL_NAME', // Update to use distinct model name variable
         type: 'list',
         message: 'Which model do you want to use?',
         choices: ['gpt-3.5-turbo', 'gpt-4'],
-        default: currentConfig.MODEL_NAME,
+        default: defaultModelName, // Use the host-specific default
       }]
     } else if (llmHost === 'ollama') {
-      console.log("Configure the ollama URL and model to use. ollama must be running with the configured model when using cmdh.")
+      console.log("Configure the ollama URL and model to use.")
       return [{
-        name: 'MODEL_NAME',
+        name: 'OLLAMA_MODEL_NAME', // Update to use distinct model name variable
         type: 'input',
         message: 'Enter the model name:',
-        default: currentConfig.MODEL_NAME,
+        default: defaultModelName, // Use the host-specific default
       }, {
         name: 'OLLAMA_HOST',
         type: 'input',
@@ -85,10 +106,10 @@ async function modify() {
     } else if (llmHost === 'cmdh') {
       console.log("Configure the cmdh-ai API key and model to use.")
       return [{
-        name: 'MODEL_NAME',
+        name: 'CMDH_MODEL_NAME', // Update to use distinct model name variable
         type: 'input',
         message: 'Enter the model name:',
-        default: currentConfig.MODEL_NAME,
+        default: defaultModelName, // Use the host-specific default
       }, {
         name: 'CMDH_API_KEY',
         type: 'input',
@@ -96,7 +117,8 @@ async function modify() {
         default: currentConfig.CMDH_API_KEY,
       }];
     } else if (llmHost === 'text-generation-webui') {
-      return [{
+      console.log("Configure the text-generation-webui host and port.")
+      return [{ // No model name for text-generation-webui, configure host and port only
         name: 'TEXT_GENERATION_WEBUI_HOST',
         type: 'input',
         message: 'Enter the text-generation-webui URL:',
@@ -114,19 +136,24 @@ async function modify() {
 
   const answers = await inquirer.prompt(questions);
 
-  const combined = { ...currentConfig, ...answers, }
+  // Modify this part to handle distinct model names
+  const modelEnvName = `${llmHost.toUpperCase()}_MODEL_NAME`; // Construct the environment variable name for the model
+  const combined = { ...currentConfig, [modelEnvName]: answers.MODEL_NAME, ...answers };
 
-  // Construct the new configuration string, conditionally including OPENAI_API_KEY
+  // Update the configuration string to include distinct model names
   let newConfig = [
     `OPENAI_API_KEY=${combined.OPENAI_API_KEY}`,
-    `MODEL_NAME=${combined.MODEL_NAME}`,
+    `OPENAI_MODEL_NAME=${combined.OPENAI_MODEL_NAME || ''}`,
+    `OLLAMA_MODEL_NAME=${combined.OLLAMA_MODEL_NAME || ''}`,
+    `CMDH_MODEL_NAME=${combined.CMDH_MODEL_NAME || ''}`,
+    `TEXT_GENERATION_WEBUI_MODEL_NAME=${combined.TEXT_GENERATION_WEBUI_MODEL_NAME || ''}`,
     `OLLAMA_HOST=${combined.OLLAMA_HOST}`,
     `CMDH_API_KEY=${combined.CMDH_API_KEY}`,
     `CMDH_API_BASE=${combined.CMDH_API_BASE}`,
     `TEXT_GENERATION_WEBUI_HOST=${combined.TEXT_GENERATION_WEBUI_HOST}`,
     `TEXT_GENERATION_WEBUI_PORT=${combined.TEXT_GENERATION_WEBUI_PORT}`,
     `LLM_HOST=${llmHost}`
-  ].join('\n')
+  ].join('\n');
 
   fs.writeFileSync('.env', newConfig);
   console.log('Configuration updated.');
