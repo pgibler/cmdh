@@ -5,7 +5,7 @@ const execAsync = promisify(exec);
 
 export async function getSystemInfo() {
   try {
-    const { stdout: distroOutput } = await execAsync('lsb_release -d -s');
+    const { stdout: distroOutput } = await execAsync(`grep DISTRIB_DESCRIPTION /etc/*-release | cut -d '=' -f 2 | sed 's/"//g'`);
     const { stdout: archOutput } = await execAsync('uname -m');
 
     const distro = distroOutput.trim();
