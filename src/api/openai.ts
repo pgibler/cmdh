@@ -25,13 +25,16 @@ export async function generate(prompt, system) {
       }
       return buffer;
     } catch (e) {
-      console.log("Failed to read stream: ", e);
+      console.error("Failed to read stream: ", e);
     }
   } catch (e) {
     if (e.message.includes('OPENAI_API_KEY')) {
-      console.log('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
+      console.error('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
     } else {
-      console.log('An error occurred while communicating with the OpenAI API. Please try again later.');
+      console.error('An error occurred while communicating with the OpenAI API. Please try again later.');
+      if (e.message) {
+        console.error(`Error message: ${e.message}`)
+      }
     }
   }
 }

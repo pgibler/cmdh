@@ -84,19 +84,19 @@ async function modify() {
         message: 'Enter your OpenAI API Key:',
         default: currentConfig.OPENAI_API_KEY,
       }, {
-        name: 'OPENAI_MODEL_NAME', // Update to use distinct model name variable
+        name: 'OPENAI_MODEL_NAME',
         type: 'list',
         message: 'Which model do you want to use?',
         choices: ['gpt-3.5-turbo', 'gpt-4'],
-        default: defaultModelName, // Use the host-specific default
+        default: 'gpt-3.5-turbo',
       }]
     } else if (llmHost === 'ollama') {
       console.log("Configure the ollama URL and model to use.")
       return [{
-        name: 'OLLAMA_MODEL_NAME', // Update to use distinct model name variable
+        name: 'OLLAMA_MODEL_NAME',
         type: 'input',
         message: 'Enter the model name:',
-        default: defaultModelName, // Use the host-specific default
+        default: 'llama2',
       }, {
         name: 'OLLAMA_HOST',
         type: 'input',
@@ -109,7 +109,7 @@ async function modify() {
         name: 'CMDH_MODEL_NAME', // Update to use distinct model name variable
         type: 'input',
         message: 'Enter the model name:',
-        default: defaultModelName, // Use the host-specific default
+        default: 'llama2', // Use the host-specific default
       }, {
         name: 'CMDH_API_KEY',
         type: 'input',
