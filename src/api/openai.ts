@@ -5,7 +5,7 @@ export async function generate(prompt, system) {
     const openai = new OpenAI();
 
     const stream = await openai.chat.completions.create({
-      model: process.env.MODEL_NAME,
+      model: process.env.OPENAI_MODEL_NAME,
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: prompt }
