@@ -1,0 +1,1 @@
+git pull && npx tsc
