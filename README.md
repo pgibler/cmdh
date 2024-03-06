@@ -48,7 +48,7 @@ Before running cmdh, you will need to configure an LLM host and set configuratio
 
 ### ollama
 
-1. Install & run the ollama service & pull the dolphin-mistral model using the following commands:
+1. Install & run the ollama service & pull the codellama model using the following commands:
 ```
 curl https://ollama.ai/install.sh | sh
 ollama pull codellama
