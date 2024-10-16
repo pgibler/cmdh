@@ -52,7 +52,7 @@ async function modify() {
   // Update currentConfig to remove MODEL_NAME and include distinct model names for each host
   const currentConfig = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
-    OPENAI_MODEL_NAME: process.env.OPENAI_MODEL_NAME || 'gpt-4', // Default for OpenAI
+    OPENAI_MODEL_NAME: process.env.OPENAI_MODEL_NAME || 'gpt-4o-mini', // Default for OpenAI
     OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME || 'custom-model', // Assuming a default
     CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME || 'custom-model', // Assuming a default
     TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME || 'custom-model', // Assuming a default
@@ -87,8 +87,8 @@ async function modify() {
         name: 'OPENAI_MODEL_NAME',
         type: 'list',
         message: 'Which model do you want to use?',
-        choices: ['gpt-3.5-turbo', 'gpt-4'],
-        default: 'gpt-3.5-turbo',
+        choices: ['gpt-4o-mini', 'gpt-4o'],
+        default: 'gpt-4o-mini',
       }]
     } else if (llmHost === 'ollama') {
       console.log("Configure the ollama URL and model to use.")
