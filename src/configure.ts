@@ -73,9 +73,6 @@ async function modify() {
   const llmHost = llmHostPrompt.LLM_HOST;
 
   async function getQuestions() {
-    // Determine the default model name based on the selected LLM host
-    const defaultModelName = currentConfig[`${llmHost.toUpperCase()}_MODEL_NAME`] || 'custom-model';
-
     if (llmHost === 'OpenAI') {
       console.log("Configure the OpenAI API key and model to use.")
       return [{
@@ -133,6 +130,10 @@ async function modify() {
   }
 
   const questions = await getQuestions();
+
+  if(!questions) {
+    throw 'Could not get questions';
+  }
 
   const answers = await inquirer.prompt(questions);
 

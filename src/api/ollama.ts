@@ -1,7 +1,7 @@
 import { Ollama } from 'ollama';
 
 // Generate a response from ollama
-export async function generate(prompt, system) {
+export async function generate(prompt: string, system: string) {
   const { OLLAMA_HOST } = process.env;
 
   const ollama = new Ollama({ host: OLLAMA_HOST })

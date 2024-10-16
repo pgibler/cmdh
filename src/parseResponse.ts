@@ -1,7 +1,7 @@
 type CommandRequestResponse = {
   setupCommands: string[],
   desiredCommand: string,
-  nonInteractive: 'yes' | 'no',
+  nonInteractive: boolean,
   safetyLevel: 'delete' | 'overwrite' | 'safe',
   assistantMessage: string
 }
@@ -12,22 +12,22 @@ export function parseResponse(responseData: string): CommandRequestResponse | nu
     const data = JSON.parse(escapedResponse);
 
     if (typeof data.desiredCommand !== 'string' ||
-      (data.nonInteractive !== 'yes' && data.nonInteractive !== 'no') ||
+      (data.nonInteractive !== 'true' && data.nonInteractive !== 'true') ||
       (data.safetyLevel !== 'delete' && data.safetyLevel !== 'overwrite' && data.safetyLevel !== 'safe') ||
       typeof data.assistantMessage !== 'string') {
       console.error('Invalid response structure:', data);
-      return null;
+      throw `Invalid response structure detected.`;
     }
 
     return {
       setupCommands: data.setupCommands ?? [],
       desiredCommand: data.desiredCommand,
-      nonInteractive: data.nonInteractive,
+      nonInteractive: Boolean(data.nonInteractive),
       safetyLevel: data.safetyLevel,
       assistantMessage: data.assistantMessage
     };
   } catch (e) {
-    console.error('Failed to parse response:', e);
-    return null;
+    console.error(`Failed to parse response:\n${JSON.stringify(responseData)}`, e);
+    throw `Failed to parse response.\n\n${JSON.stringify(responseData)}`;
   }
 }

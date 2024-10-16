@@ -1,11 +1,11 @@
 import OpenAI from "openai";
 
-export async function generate(prompt, system) {
+export async function generate(prompt: string, system: string) {
   try {
     const openai = new OpenAI();
 
     const stream = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL_NAME,
+      model: process.env.OPENAI_MODEL_NAME || '',
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: prompt }
@@ -27,7 +27,7 @@ export async function generate(prompt, system) {
     } catch (e) {
       console.error("Failed to read stream: ", e);
     }
-  } catch (e) {
+  } catch (e: any) {
     if (e.message.includes('OPENAI_API_KEY')) {
       console.error('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
     } else {

@@ -29,7 +29,7 @@ export async function run(promptArgs: string[]) {
     const executionModeSelection = executionMode.EXECUTION_MODE;
 
     if (executionModeSelection === 'Input a prompt') {
-      async function questionAsync(message) {
+      async function questionAsync(message: string) {
         const answers = await inquirer.prompt<{ COMMAND_REQUEST: string }>({
           name: 'COMMAND_REQUEST',
           type: 'input',
@@ -58,11 +58,14 @@ export async function run(promptArgs: string[]) {
     }
   }
 
-  async function handlePrompt(input) {
+  async function handlePrompt(input: string) {
     async function getSystemMessage() {
       const dirname = path.dirname(new URL(import.meta.url).pathname)
       const systemMessageTemplate = await readFile(path.resolve(dirname, '../system.prompt'), 'utf-8');
       const systemInfo = await getSystemInfo();
+      if(!systemInfo) {
+        throw "Could not retrieve system info";
+      }
       const { distro, arch } = systemInfo;
       return systemMessageTemplate.replace('{distro}', distro).replace('{arch}', arch);
     }
@@ -70,10 +73,17 @@ export async function run(promptArgs: string[]) {
     const systemMessage = await getSystemMessage();
 
     const response = await startChat(input, systemMessage);
-    const { setupCommands, desiredCommand, nonInteractive, safetyLevel, assistantMessage } = parseResponse(response);
+    if(!response) {
+      throw 'Could not get response'
+    }
+    const parsedResponse = parseResponse(response);
+    if(!parsedResponse) {
+      throw 'Could not parse response.'
+    }
+    const { setupCommands, desiredCommand, nonInteractive, safetyLevel, assistantMessage } = parsedResponse;
 
     if (setupCommands.length > 0) {
-      console.log(chalk.green('setup commands:'), `[ ${setupCommands.map(command => chalk.blue(command)).join(', ')} ]`);
+      console.log(chalk.green('setup commands:'), `[ ${setupCommands.map((command: string) => chalk.blue(command)).join(', ')} ]`);
     }
     console.log(chalk.green('desired command:'), chalk.yellow(desiredCommand));
     console.log(chalk.cyan('assistant message:'), assistantMessage);
@@ -88,7 +98,7 @@ export async function run(promptArgs: string[]) {
   }
 }
 
-async function promptAndExecute(setupCommands, desiredCommand, nonInteractive) {
+async function promptAndExecute(setupCommands: string[], desiredCommand: string, nonInteractive: boolean) {
   let choice = await getPromptChoice(nonInteractive, setupCommands);
 
   switch (choice.toLowerCase()) {
@@ -113,7 +123,7 @@ async function promptAndExecute(setupCommands, desiredCommand, nonInteractive) {
   }
 }
 
-async function getPromptChoice(nonInteractive, setupCommands): Promise<string> {
+async function getPromptChoice(nonInteractive: boolean, setupCommands: string[]): Promise<string> {
   const options = [
     {
       name: 'Run desired command',
@@ -153,24 +163,24 @@ async function getPromptChoice(nonInteractive, setupCommands): Promise<string> {
 import { spawn } from 'child_process';
 import { parseResponse } from './parseResponse.js';
 
-async function runAllCommands(setupCommands, desiredCommand) {
+async function runAllCommands(setupCommands: string[], desiredCommand: string) {
   await runCommands(setupCommands);
   await runCommands([desiredCommand]);
 }
 
-async function runCommands(commands) {
+async function runCommands(commands: string[]) {
   for (const command of commands) {
     // Run each command
     console.log(`Running: ${command}`);
     try {
       await runCommandWithSpawn(command);
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error executing command: ${error.message}`);
     }
   }
 }
 
-function runCommandWithSpawn(command) {
+function runCommandWithSpawn(command: string) {
   return new Promise((resolve, reject) => {
     const spawnedCommand = spawn(command, { stdio: 'inherit', shell: true });
 
@@ -188,7 +198,7 @@ function runCommandWithSpawn(command) {
   });
 }
 
-async function copyCommand(command, showImportErrorMessage = false) {
+async function copyCommand(command: string, showImportErrorMessage = false) {
   try {
     // Dynamically import clipboardy
     const clipboardy = (await import('clipboardy')).default;

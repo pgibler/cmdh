@@ -11,8 +11,8 @@ const generateFunctionMap = {
   'text-generation-webui': generateTextGenerationWebUI
 }
 
-export async function startChat(prompt, system, showOra = true) {
-  const generateFunction = generateFunctionMap[process.env.LLM_HOST]
+export async function startChat(prompt: string, system: string, showOra = true) {
+  const generateFunction = generateFunctionMap[process.env.LLM_HOST as keyof typeof generateFunctionMap];
   if (showOra) {
     const promise = generateFunction(prompt, system);
 
@@ -24,7 +24,7 @@ export async function startChat(prompt, system, showOra = true) {
   }
 }
 
-function truncate(input, length) {
+function truncate(input: string, length: number) {
   if (input.length > length) {
     const truncated = input.substring(0, length).replace(/\n/g, ' ') + '...';
     return truncated;

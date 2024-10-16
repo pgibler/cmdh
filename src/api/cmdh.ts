@@ -1,6 +1,6 @@
 import { readStream } from "./stream.js";
 
-export async function generate(prompt, system) {
+export async function generate(prompt: string, system: string) {
   try {
     const { CMDH_API_BASE, CMDH_API_KEY } = process.env;
     const endpoint = '/api/generate'; // API endpoint
@@ -28,6 +28,9 @@ export async function generate(prompt, system) {
 
     // Handle the stream
     const reader = response.body;
+    if(!reader) {
+      throw new Error("Reader was null.");
+    }
     const streamResponse = await readStream(
       reader,
       value => value
@@ -36,19 +39,5 @@ export async function generate(prompt, system) {
     return streamResponse.value
   } catch (e) {
     console.log('An error occurred while communicating with the Cmdh API. Please try again later.');
-  }
-}
-
-function parseSequentialJSON(jsonString) {
-  // Add a comma between the }{ to transform it into a valid JSON array
-  const validJsonString = `[${jsonString.replace(/}\s*{/g, '},{')}]`;
-
-  try {
-    // Parse the valid JSON string
-    const jsonArray = JSON.parse(validJsonString);
-    return jsonArray;
-  } catch (error) {
-    console.error("Parsing error:", error);
-    return null;
   }
 }

@@ -15,7 +15,7 @@ export async function getSystemInfo() {
       distro,
       arch,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error executing command: ${error.message}`);
   }
 }
