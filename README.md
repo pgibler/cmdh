@@ -23,7 +23,7 @@ Use it to look up commands and flags that that you don't know offhand or generat
 
 1. Set up and configure cmdh using the following command:
 ```
-git clone https://github.com/pgibler/cmdh.git && cd cmdh && ./install.sh
+git clone https://github.com/maglore9900/cmdh.git && cd cmdh && ./install.sh
 ```
 2. Run it like so:
 ```
