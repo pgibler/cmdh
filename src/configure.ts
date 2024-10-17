@@ -84,8 +84,8 @@ async function modify() {
         name: 'OPENAI_MODEL_NAME',
         type: 'list',
         message: 'Which model do you want to use?',
-        choices: ['gpt-3.5-turbo', 'gpt-4'],
-        default: 'gpt-3.5-turbo',
+        choices: ['gpt-4o', 'gpt-4', 'gpt-3.5-turbo'],
+        default: 'gpt-4o',
       }]
     } else if (llmHost === 'ollama') {
       console.log("Configure the ollama URL and model to use.")

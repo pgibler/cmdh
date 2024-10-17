@@ -30,13 +30,13 @@ npm install
 npx tsc
 
 # Setup .env file
-node ./dist/index.js configure
+node ./dist/src/cmdh.js configure
 
 # Get the directory where the install script is located
 CMDH_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Alias command using the dynamically determined path
-alias_cmd="alias cmdh='node $CMDH_DIR/dist/index.js'"
+alias_cmd="alias cmdh='node $CMDH_DIR/dist/src/cmdh.js'"
 
 # Function to add alias and reload config for Bash and Zsh
 add_alias_and_reload() {

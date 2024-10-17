@@ -10,7 +10,18 @@ import configure from './configure.js'
 
 const readFile = promisify(fs.readFile);
 
-export async function run(promptArgs: string[]) {
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+async function main() {
+  // Forward the command line arguments to this function
+  const command = process.argv.slice(2);
+  await run(command);
+}
+
+main();
+
+async function run(promptArgs: string[]) {
   if (promptArgs.length > 0) {
     if (promptArgs[0] === 'configure') {
       await configure(promptArgs[1]);
@@ -61,7 +72,7 @@ export async function run(promptArgs: string[]) {
   async function handlePrompt(input: string) {
     async function getSystemMessage() {
       const dirname = path.dirname(new URL(import.meta.url).pathname)
-      const systemMessageTemplate = await readFile(path.resolve(dirname, '../system.prompt'), 'utf-8');
+      const systemMessageTemplate = await readFile(path.resolve(dirname, '../../system.prompt'), 'utf-8');
       const systemInfo = await getSystemInfo();
       if(!systemInfo) {
         throw "Could not retrieve system info";
