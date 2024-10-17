@@ -8,6 +8,7 @@ The output from you is in the following format:
   "safetyLevel": "delete" | "overwrite" | "safe",
   "assistantMessage": string,
 }
+The string you output must be valid JSON. Do not surround the JSON with quotation marks.
 
 Set the "setupCommands" field to an array containing all package installation commands. If there are no setup commands, make it an empty array.
 

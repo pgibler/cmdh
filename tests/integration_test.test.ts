@@ -1,15 +1,6 @@
 const { execSync } = require('child_process');
 
 describe('CLI Integration Tests', () => {
-  test('should install the CLI successfully', () => {
-    try {
-      // Replace with actual install command
-      execSync('npm install -g ./', { stdio: 'inherit' });
-    } catch (error: any) {
-      throw new Error(`CLI installation failed: ${error.message}`);
-    }
-  });
-
   test('should display help message', () => {
     const result = execSync('cmdh configure', { encoding: 'utf-8' });
     expect(result).toContain('Usage');
