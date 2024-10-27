@@ -93,7 +93,7 @@ async function modify() {
         name: 'OLLAMA_MODEL_NAME',
         type: 'input',
         message: 'Enter the model name:',
-        default: 'llama2',
+        default: 'llama3',
       }, {
         name: 'OLLAMA_HOST',
         type: 'input',
@@ -106,7 +106,7 @@ async function modify() {
         name: 'CMDH_MODEL_NAME', // Update to use distinct model name variable
         type: 'input',
         message: 'Enter the model name:',
-        default: 'llama2', // Use the host-specific default
+        default: 'llama3', // Use the host-specific default
       }, {
         name: 'CMDH_API_KEY',
         type: 'input',

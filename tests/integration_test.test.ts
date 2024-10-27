@@ -1,9 +1,10 @@
 const { execSync } = require('child_process');
 
 describe('CLI Integration Tests', () => {
-  test('should display help message', () => {
-    const result = execSync('cmdh configure', { encoding: 'utf-8' });
-    expect(result).toContain('Usage');
+  test('should show configuration', () => {
+    const result = execSync('cmdh configure show', { encoding: 'utf-8' });
+    console.log(result)
+    expect(result).toContain('LLM host');
   });
 
   test('should run with arguments and produce expected output', () => {

@@ -7,7 +7,7 @@ export async function generate(prompt: string, system: string) {
   const ollama = new Ollama({ host: OLLAMA_HOST })
 
   const response = await ollama.chat({
-    model: 'llama2',
+    model: process.env.OLLAMA_MODEL_NAME ?? '',
     messages: [{
       'role': 'system',
       'content': system,
