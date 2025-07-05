@@ -11,10 +11,21 @@ export function parseResponse(responseData: string): CommandRequestResponse | nu
     const escapedResponse = responseData.replace(/\\n/g, "\n");
     const data = JSON.parse(escapedResponse);
 
-    if (typeof data.desiredCommand !== 'string' ||
-      (data.nonInteractive !== 'true' && data.nonInteractive !== 'true') ||
-      (data.safetyLevel !== 'delete' && data.safetyLevel !== 'overwrite' && data.safetyLevel !== 'safe') ||
-      typeof data.assistantMessage !== 'string') {
+    const safetLevelValid = data.safetyLevel === 'delete'
+      || data.safetyLevel === 'overwrite'
+      || data.safetyLevel === 'safe';
+
+    // Weak-check equality for values of true (boolean) and 'true' (string)
+    const nonInteractiveValid = data.nonInteractive == 'true'
+
+    const desiredCommandValid = typeof data.desiredCommand === 'string';
+
+    const assistantMessageValid = typeof data.assistantMessage === 'string';
+
+    if (!(desiredCommandValid
+      && nonInteractiveValid
+      && safetLevelValid
+      && assistantMessageValid)) {
       console.error('Invalid response structure:', data);
       throw `Invalid response structure detected.`;
     }
