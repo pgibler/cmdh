@@ -11,19 +11,6 @@
       "preLaunchTask": "npm: build",
       "args": []
     },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Jest Tests",
-      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
-      "args": ["--runInBand", "--config", "jest.config.js"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true,
-      "env": {
-        "NODE_ENV": "test"
-      }
-    }
   ],
   
 }
