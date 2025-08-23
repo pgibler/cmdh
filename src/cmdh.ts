@@ -70,6 +70,11 @@ async function run(promptArgs: string[]) {
   }
 
   async function handlePrompt(input: string) {
+    if(!process.env.LLM_HOST) {
+      console.error("Run `cmdh configure` to set your LLM host.");
+      return;
+    }
+
     async function getSystemMessage() {
       const dirname = path.dirname(new URL(import.meta.url).pathname)
       const systemMessageTemplate = await readFile(path.resolve(dirname, '../../system.prompt'), 'utf-8');
