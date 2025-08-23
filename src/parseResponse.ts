@@ -16,7 +16,7 @@ export function parseResponse(responseData: string): CommandRequestResponse | nu
       || data.safetyLevel === 'safe';
 
     // Weak-check equality for values of true (boolean) and 'true' (string)
-    const nonInteractiveValid = data.nonInteractive == 'true'
+    const nonInteractiveValid = data.nonInteractive === true || data.nonInteractive == 'true'
 
     const desiredCommandValid = typeof data.desiredCommand === 'string';
 
