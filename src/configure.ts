@@ -13,6 +13,9 @@ async function showConfiguration() {
   const config = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     OPENAI_MODEL_NAME: process.env.OPENAI_MODEL_NAME,
+    AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY,
+    AZURE_OPENAI_ENDPOINT: process.env.AZURE_OPENAI_ENDPOINT,
+    AZURE_OPENAI_DEPLOYMENT_NAME: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
     OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME,
     CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME,
     TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME,
@@ -29,6 +32,11 @@ async function showConfiguration() {
     case 'OpenAI':
       console.log(`Model: ${config.OPENAI_MODEL_NAME}`);
       console.log(`API key: ${config.OPENAI_API_KEY}`);
+      break;
+    case 'Azure-OpenAI':
+      console.log(`Deployment: ${config.AZURE_OPENAI_DEPLOYMENT_NAME}`);
+      console.log(`Endpoint: ${config.AZURE_OPENAI_ENDPOINT}`);
+      console.log(`API key: ${config.AZURE_OPENAI_API_KEY}`);
       break;
     case 'ollama':
       console.log(`Model: ${config.OLLAMA_MODEL_NAME}`);
@@ -53,6 +61,9 @@ async function modify() {
   const currentConfig = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
     OPENAI_MODEL_NAME: process.env.OPENAI_MODEL_NAME || 'gpt-4', // Default for OpenAI
+    AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY || '',
+    AZURE_OPENAI_ENDPOINT: process.env.AZURE_OPENAI_ENDPOINT || '',
+    AZURE_OPENAI_DEPLOYMENT_NAME: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || '',
     OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME || 'custom-model', // Assuming a default
     CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME || 'custom-model', // Assuming a default
     TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME || 'custom-model', // Assuming a default
@@ -67,7 +78,7 @@ async function modify() {
     name: 'LLM_HOST',
     type: 'list',
     message: 'Which LLM host do you want to use?',
-    choices: ['OpenAI', 'ollama', 'text-generation-webui'], // Ensure all options are included
+    choices: ['OpenAI', 'Azure-OpenAI', 'ollama', 'text-generation-webui'], // Ensure all options are included
   });
 
   const llmHost = llmHostPrompt.LLM_HOST;
@@ -86,6 +97,24 @@ async function modify() {
         message: 'Which model do you want to use?',
         choices: ['gpt-4o', 'gpt-4', 'gpt-3.5-turbo'],
         default: 'gpt-4o',
+      }]
+    } else if (llmHost === 'Azure-OpenAI') {
+      console.log("Configure the Azure OpenAI endpoint, deployment, and API key.")
+      return [{
+        name: 'AZURE_OPENAI_ENDPOINT',
+        type: 'input',
+        message: 'Enter your Azure OpenAI endpoint URL:',
+        default: currentConfig.AZURE_OPENAI_ENDPOINT,
+      }, {
+        name: 'AZURE_OPENAI_DEPLOYMENT_NAME',
+        type: 'input',
+        message: 'Enter your Azure OpenAI deployment name:',
+        default: currentConfig.AZURE_OPENAI_DEPLOYMENT_NAME,
+      }, {
+        name: 'AZURE_OPENAI_API_KEY',
+        type: 'input',
+        message: 'Enter your Azure OpenAI API key:',
+        default: currentConfig.AZURE_OPENAI_API_KEY,
       }]
     } else if (llmHost === 'ollama') {
       console.log("Configure the ollama URL and model to use.")
@@ -131,7 +160,7 @@ async function modify() {
 
   const questions = await getQuestions();
 
-  if(!questions) {
+  if (!questions) {
     throw 'Could not get questions';
   }
 
@@ -145,6 +174,9 @@ async function modify() {
   let newConfig = [
     `OPENAI_API_KEY=${combined.OPENAI_API_KEY}`,
     `OPENAI_MODEL_NAME=${combined.OPENAI_MODEL_NAME || ''}`,
+    `AZURE_OPENAI_API_KEY=${combined.AZURE_OPENAI_API_KEY || ''}`,
+    `AZURE_OPENAI_ENDPOINT=${combined.AZURE_OPENAI_ENDPOINT || ''}`,
+    `AZURE_OPENAI_DEPLOYMENT_NAME=${combined.AZURE_OPENAI_DEPLOYMENT_NAME || ''}`,
     `OLLAMA_MODEL_NAME=${combined.OLLAMA_MODEL_NAME || ''}`,
     `CMDH_MODEL_NAME=${combined.CMDH_MODEL_NAME || ''}`,
     `TEXT_GENERATION_WEBUI_MODEL_NAME=${combined.TEXT_GENERATION_WEBUI_MODEL_NAME || ''}`,

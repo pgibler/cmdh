@@ -1,12 +1,14 @@
 import { oraPromise } from 'ora';
 import { generate as generateCmdh } from './cmdh.js';
 import { generate as generateOpenAI } from './openai.js';
+import { generate as generateAzureOpenAI } from './azure-openai.js';
 import { generate as generateOllama } from './ollama.js';
 import { generate as generateTextGenerationWebUI } from './text_generation_web_ui.js';
 
 const generateFunctionMap = {
   'cmdh': generateCmdh,
   'OpenAI': generateOpenAI,
+  'Azure-OpenAI': generateAzureOpenAI,
   'ollama': generateOllama,
   'text-generation-webui': generateTextGenerationWebUI
 }
