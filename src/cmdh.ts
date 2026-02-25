@@ -19,7 +19,10 @@ async function main() {
   await run(command);
 }
 
-main();
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
 
 async function run(promptArgs: string[]) {
   if (promptArgs.length > 0) {
@@ -230,4 +233,3 @@ async function copyCommand(command: string, showImportErrorMessage = false) {
     console.log(command);
   }
 }
-

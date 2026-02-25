@@ -4,31 +4,22 @@ export async function generate(prompt: string, system: string) {
   try {
     const openai = new OpenAI();
 
-    const stream = await openai.chat.completions.create({
+    const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL_NAME || '',
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: prompt }
       ],
-      stream: true,
+      response_format: { type: 'json_object' },
     });
 
-    try {
-      let buffer = '';
-      // Collecting data from the stream
-      for await (const chunk of stream) {
-        // Assuming chunk is a string or can be converted to string
-        const content = chunk.choices[0].delta.content
-        if (content) {
-          buffer += content;
-        }
-      }
-      return buffer;
-    } catch (e) {
-      console.error("Failed to read stream: ", e);
+    const content = completion.choices?.[0]?.message?.content;
+    if (typeof content === 'string') {
+      return content;
     }
+    throw new Error('OpenAI response did not contain text content.');
   } catch (e: any) {
-    if (e.message.includes('OPENAI_API_KEY')) {
+    if (e.message?.includes('OPENAI_API_KEY')) {
       console.error('You must set your OpenAI API key using "cmdh configure" before using the OpenAI mode.');
     } else {
       console.error('An error occurred while communicating with the OpenAI API. Please try again later.');
