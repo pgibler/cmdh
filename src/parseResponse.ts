@@ -40,17 +40,44 @@ function parseJsonResponse(responseData: string): any {
     .replace(/^```(?:json)?\s*/i, '')
     .replace(/\s*```$/, '');
 
-  try {
-    return JSON.parse(withoutFences);
-  } catch {
-    const firstBrace = withoutFences.indexOf('{');
-    const lastBrace = withoutFences.lastIndexOf('}');
-    if (firstBrace >= 0 && lastBrace > firstBrace) {
-      const possibleJson = withoutFences.slice(firstBrace, lastBrace + 1);
-      return JSON.parse(possibleJson);
+  const candidates = buildJsonCandidates(withoutFences);
+  let lastError: unknown = null;
+
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate);
+    } catch (error) {
+      lastError = error;
     }
-    throw new Error('No JSON object found in response.');
   }
+
+  throw lastError ?? new Error('No JSON object found in response.');
+}
+
+function buildJsonCandidates(raw: string): string[] {
+  const firstBrace = raw.indexOf('{');
+  const lastBrace = raw.lastIndexOf('}');
+  const extracted = firstBrace >= 0
+    ? (lastBrace > firstBrace ? raw.slice(firstBrace, lastBrace + 1) : raw.slice(firstBrace))
+    : raw;
+
+  const withClosingBrace = extracted.trim().endsWith('}') ? extracted : `${extracted}}`;
+
+  const candidates = [
+    raw,
+    extracted,
+    withClosingBrace,
+    repairInvalidJsonEscapes(raw),
+    repairInvalidJsonEscapes(extracted),
+    repairInvalidJsonEscapes(withClosingBrace),
+  ];
+
+  return [...new Set(candidates.filter((candidate) => candidate.trim().length > 0))];
+}
+
+function repairInvalidJsonEscapes(input: string): string {
+  // Keep valid JSON escapes intact and only repair invalid ones (for example "\$").
+  return input.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
 }
 
 function getString(value: unknown): string | null {
