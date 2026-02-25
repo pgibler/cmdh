@@ -127,7 +127,7 @@ async function promptAndExecute(setupCommands: string[], desiredCommand: string,
     case 'desired':
       await runCommands([desiredCommand]);
       break;
-    case 'emit':
+    case 'copy':
       copyCommand(desiredCommand);
       break;
     case 'setup':

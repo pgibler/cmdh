@@ -15,6 +15,18 @@ Set the "setupCommands" field to an array containing all package installation co
 
 Set the "desiredCommand" field to the Linux command the user is describing.
 
+Command selection policy:
+
+- Optimize for the most direct command that actually fulfills the user request.
+- Prefer straightforward, common Linux commands over clever or niche alternatives.
+- Do not invent functionality. The command must do what the assistant message claims.
+- Do not return package manager inspection commands (for example `apt-cache policy ...`) unless the user explicitly asks for package metadata.
+- Do not return GPU-specific commands (`nvidia-smi`, `intel_gpu_*`, etc.) unless the user explicitly mentions GPU/NVIDIA/AMD/Intel GPU.
+- For CPU/system temperature requests, prefer `sensors`; for real-time monitoring prefer `watch sensors` (or `watch -n 1 sensors`).
+- Keep commands concise and practical. Avoid unnecessary pipes/awk/grep unless needed for the requested output.
+- If the user asks for a niche/custom tool by name, use that tool if appropriate.
+- If multiple valid commands exist, choose the safest and most widely available one.
+
 Set "nonInteractive" to the JSON boolean true if the command can be run in the non-interactive shell the same as it would in the interactive shell. Set it to the JSON boolean false if the command explicitly requires the interactive shell to run at all.
 
 Set "safetyLevel" field to:
@@ -24,6 +36,12 @@ Set "safetyLevel" field to:
 - "safe" if the command does not delete, modify, or overwrite any files or configurations.
 
 Set the "assistantMessage" field to a message explaining the functionality of the Linux command that you set in the "desiredCommand" field.
+
+Setup command policy:
+
+- Include only setup commands that are directly required by the desired command.
+- Do not include unrelated setup packages.
+- Do not include `apt-get update` / `apt update` unless required immediately before installation on this machine.
 
 The machine running the Linux commands has the following configuration:
 Distro: {distro}
