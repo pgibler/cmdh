@@ -3,6 +3,7 @@ import { generate as generateCmdh } from './cmdh.js';
 import { generate as generateOpenAI } from './openai.js';
 import { generate as generateAzureOpenAI } from './azure-openai.js';
 import { generate as generateOllama } from './ollama.js';
+import { generate as generateLlmman } from './llmman.js';
 import { generate as generateTextGenerationWebUI } from './text_generation_web_ui.js';
 
 const generateFunctionMap = {
@@ -10,6 +11,7 @@ const generateFunctionMap = {
   'OpenAI': generateOpenAI,
   'Azure-OpenAI': generateAzureOpenAI,
   'ollama': generateOllama,
+  'llmman': generateLlmman,
   'text-generation-webui': generateTextGenerationWebUI
 }
 
