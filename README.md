@@ -11,7 +11,7 @@ Use it to look up commands and flags that that you don't know offhand or generat
 - Generate Linux commands from natural language
 - Interactively run the commands using a hotkey menu system
 - Differentiates between shell command types: interactive and non-interactive
-- Supports [ChatGPT](https://platform.openai.com/docs/overview), [ollama](https://ollama.ai/), and [text-generation-webui](https://github.com/oobabooga/text-generation-webui)
+- Supports [ChatGPT](https://platform.openai.com/docs/overview), [ollama](https://ollama.ai/), [llmman](https://github.com/llmmanorg/llmman), and [text-generation-webui](https://github.com/oobabooga/text-generation-webui)
 
 ## Prerequisites
 
@@ -54,6 +54,18 @@ curl https://ollama.ai/install.sh | sh
 ollama pull codellama
 ```
 2. Run `cmdh configure`, select the ollama option, and set 'codellama' as the model.
+
+### llmman
+
+[llmman](https://github.com/llmmanorg/llmman) is a local model runner that serves the Ollama API on port 17434.
+
+1. Install & run the llmman service & pull a model using the following commands:
+```
+curl -fsSL https://raw.githubusercontent.com/llmmanorg/llmman/main/install.sh | sh
+llmman serve
+llmman pull gemma4
+```
+2. Run `cmdh configure`, select the llmman option, and set 'gemma4' as the model. The URL defaults to `http://localhost:17434` (override with `LLMMAN_HOST`).
 
 ### text-generation-webui
 

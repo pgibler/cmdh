@@ -17,9 +17,11 @@ async function showConfiguration() {
     AZURE_OPENAI_ENDPOINT: process.env.AZURE_OPENAI_ENDPOINT,
     AZURE_OPENAI_DEPLOYMENT_NAME: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
     OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME,
+    LLMMAN_MODEL_NAME: process.env.LLMMAN_MODEL_NAME,
     CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME,
     TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME,
     OLLAMA_HOST: process.env.OLLAMA_HOST,
+    LLMMAN_HOST: process.env.LLMMAN_HOST,
     CMDH_API_KEY: process.env.CMDH_API_KEY,
     CMDH_API_BASE: process.env.CMDH_API_BASE,
     LLM_HOST: process.env.LLM_HOST,
@@ -41,6 +43,10 @@ async function showConfiguration() {
     case 'ollama':
       console.log(`Model: ${config.OLLAMA_MODEL_NAME}`);
       console.log(`ollama host URL: ${config.OLLAMA_HOST}`);
+      break;
+    case 'llmman':
+      console.log(`Model: ${config.LLMMAN_MODEL_NAME}`);
+      console.log(`llmman host URL: ${config.LLMMAN_HOST}`);
       break;
     case 'cmdh':
       console.log(`Model: ${config.CMDH_MODEL_NAME}`);
@@ -65,9 +71,11 @@ async function modify() {
     AZURE_OPENAI_ENDPOINT: process.env.AZURE_OPENAI_ENDPOINT || '',
     AZURE_OPENAI_DEPLOYMENT_NAME: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || '',
     OLLAMA_MODEL_NAME: process.env.OLLAMA_MODEL_NAME || 'custom-model', // Assuming a default
+    LLMMAN_MODEL_NAME: process.env.LLMMAN_MODEL_NAME || 'custom-model', // Assuming a default
     CMDH_MODEL_NAME: process.env.CMDH_MODEL_NAME || 'custom-model', // Assuming a default
     TEXT_GENERATION_WEBUI_MODEL_NAME: process.env.TEXT_GENERATION_WEBUI_MODEL_NAME || 'custom-model', // Assuming a default
     OLLAMA_HOST: process.env.OLLAMA_HOST || 'http://localhost:11434',
+    LLMMAN_HOST: process.env.LLMMAN_HOST || 'http://localhost:17434',
     CMDH_API_KEY: process.env.CMDH_API_KEY || '',
     CMDH_API_BASE: process.env.CMDH_API_BASE || 'https://cmdh.ai/',
     TEXT_GENERATION_WEBUI_HOST: process.env.TEXT_GENERATION_WEBUI_HOST || 'http://127.0.0.1',
@@ -78,7 +86,7 @@ async function modify() {
     name: 'LLM_HOST',
     type: 'list',
     message: 'Which LLM host do you want to use?',
-    choices: ['OpenAI', 'Azure-OpenAI', 'ollama', 'text-generation-webui'], // Ensure all options are included
+    choices: ['OpenAI', 'Azure-OpenAI', 'ollama', 'llmman', 'text-generation-webui'], // Ensure all options are included
   });
 
   const llmHost = llmHostPrompt.LLM_HOST;
@@ -129,6 +137,19 @@ async function modify() {
         message: 'Enter the ollama URL:',
         default: currentConfig.OLLAMA_HOST,
       }]
+    } else if (llmHost === 'llmman') {
+      console.log("Configure the llmman URL and model to use.")
+      return [{
+        name: 'LLMMAN_MODEL_NAME',
+        type: 'input',
+        message: 'Enter the model name:',
+        default: 'gemma4',
+      }, {
+        name: 'LLMMAN_HOST',
+        type: 'input',
+        message: 'Enter the llmman URL:',
+        default: currentConfig.LLMMAN_HOST,
+      }]
     } else if (llmHost === 'cmdh') {
       console.log("Configure the cmdh-ai API key and model to use.")
       return [{
@@ -178,9 +199,11 @@ async function modify() {
     `AZURE_OPENAI_ENDPOINT=${combined.AZURE_OPENAI_ENDPOINT || ''}`,
     `AZURE_OPENAI_DEPLOYMENT_NAME=${combined.AZURE_OPENAI_DEPLOYMENT_NAME || ''}`,
     `OLLAMA_MODEL_NAME=${combined.OLLAMA_MODEL_NAME || ''}`,
+    `LLMMAN_MODEL_NAME=${combined.LLMMAN_MODEL_NAME || ''}`,
     `CMDH_MODEL_NAME=${combined.CMDH_MODEL_NAME || ''}`,
     `TEXT_GENERATION_WEBUI_MODEL_NAME=${combined.TEXT_GENERATION_WEBUI_MODEL_NAME || ''}`,
     `OLLAMA_HOST=${combined.OLLAMA_HOST}`,
+    `LLMMAN_HOST=${combined.LLMMAN_HOST}`,
     `CMDH_API_KEY=${combined.CMDH_API_KEY}`,
     `CMDH_API_BASE=${combined.CMDH_API_BASE}`,
     `TEXT_GENERATION_WEBUI_HOST=${combined.TEXT_GENERATION_WEBUI_HOST}`,
